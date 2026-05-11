@@ -93,7 +93,8 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-// Email service removed per request
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IEmailRepository, EmailRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

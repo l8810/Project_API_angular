@@ -12,10 +12,12 @@ namespace StoreApi.Services
     public class EmailService : IEmailService
     {
         private readonly IEmailRepository _repository;
+        private readonly IConfiguration _config;
 
-        public EmailService(IEmailRepository repository)
+        public EmailService(IEmailRepository repository, IConfiguration config)
         {
             _repository = repository;
+            _config = config;
         }
 
         /// <summary>
@@ -33,14 +35,15 @@ namespace StoreApi.Services
                 if (details == null) 
                     throw new Exception("Winner details not found for gift ID: " + giftId);
 
+                var senderEmail = _config["EmailSettings:SenderEmail"]!;
+                var appPassword = _config["EmailSettings:AppPassword"]!;
+
                 // STEP 2: Create the email message with winner details
                 var message = new MimeMessage();
-                message.From.Add(new MailboxAddress("Raffle System", "your-email@gmail.com")); // TODO: Configure from appsettings.json
+                message.From.Add(new MailboxAddress("Raffle System", senderEmail));
                 message.To.Add(new MailboxAddress(details.WinnerName, details.Email));
                 message.Subject = "Congratulations! You Won the Raffle";
 
-                // TODO: CUSTOMIZE EMAIL CONTENT HERE
-                // Email template with winner name and gift name
                 string emailBody = $@"
 Congratulations {details.WinnerName}!
 
@@ -59,7 +62,7 @@ Raffle System";
                 // STEP 3: Send the email via SMTP
                 using var client = new SmtpClient();
                 await client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-                await client.AuthenticateAsync("chany607036@gmail.com", "JBH"); // TODO: Move to appsettings.json
+                await client.AuthenticateAsync(senderEmail, appPassword);
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);
             }
