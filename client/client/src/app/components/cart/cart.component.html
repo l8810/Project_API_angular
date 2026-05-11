@@ -1,0 +1,121 @@
+<p-toast></p-toast>
+
+<div class="dashboard-wrapper p-4" dir="rtl">
+    <div class="cart-container">
+        <div class="flex align-items-center gap-3 mb-5 mt-2">
+            <i class="pi pi-shopping-cart text-primary text-3xl title-glow"></i>
+            <h1 class="text-3xl font-bold m-0 text-white">סל הקניות שלי</h1>
+        </div>
+
+        @if (cartItems().length > 0) {
+        <div class="grid justify-content-center">
+            <div class="col-12 lg:col-8">
+                @for (item of cartItems(); track item.id) {
+                <div class="premium-gift-card flex align-items-center p-3 mb-3">
+                    <img [src]="getImageUrl(item.giftImage)" class="gift-img-premium-cart" />
+
+                    <div class="flex-grow-1 px-4">
+                        <h4 class="m-0 text-xl font-semibold text-white">{{item.giftName}}</h4>
+                        <span class="text-400 text-sm">מחיר יחידה: {{item.price}} ₪</span>
+                    </div>
+
+                    <div class="qty-selector flex align-items-center mx-4">
+                        <button class="qty-btn" (click)="handleSimpleUpdate(item, 1)">+</button>
+                        <span class="qty-value">{{item.count}}</span>
+                        <button class="qty-btn" (click)="handleSimpleUpdate(item, -1)">-</button>
+                    </div>
+
+                    <div class="text-left flex align-items-center gap-3" style="min-width: 120px;">
+                        <span class="price-tag-sm">₪{{item.price * item.count}}</span>
+                        <button pButton icon="pi pi-trash" (click)="removeItem(item.id)"
+                            class="p-button-rounded p-button-danger p-button-text hover-red"></button>
+                    </div>
+                </div>
+                }
+            </div>
+
+            <div class="col-12 lg:col-4">
+                <div class="premium-gift-card p-4 sticky top-0" style="border-top: 4px solid #00b894;">
+                    <h3 class="mt-0 border-bottom-1 border-700 pb-3 font-bold text-white">פרטי תשלום</h3>
+                    <div class="flex justify-content-between mb-3 mt-3">
+                        <span class="text-400">סה"כ פריטים:</span>
+                        <span class="font-semibold text-white">{{totalItems()}}</span>
+                    </div>
+                    <div class="flex justify-content-between align-items-center py-3 border-top-1 border-700 mb-4">
+                        <span class="text-xl font-bold text-white">סה"כ לתשלום:</span>
+                        <span class="price-val">₪{{totalPrice()}}</span>
+                    </div>
+                    <button pButton label="מעבר לתשלום מאובטח" icon="pi pi-lock" (click)="showPayment()"
+                        class="add-to-cart-glow w-full py-3 text-lg font-bold">
+                    </button>
+                </div>
+            </div>
+        </div>
+        } @else {
+        <div class="empty-cart-state text-center p-8 border-round-xl mt-4">
+            <div class="empty-icon-wrapper mb-4">
+                <i class="pi pi-shopping-bag text-700" style="font-size: 5rem;"></i>
+                <i class="pi pi-times-circle text-primary absolute" style="font-size: 2rem; bottom: 0; right: 25%;"></i>
+            </div>
+            <h2 class="text-white text-3xl font-bold mb-2">הסל שלך ריק כרגע</h2>
+            <p class="text-400 mb-5 text-lg">נראה שעדיין לא בחרת שום פריט למכירה הסינית.</p>
+            <button pButton label="חזרה לדף המתנות" icon="pi pi-arrow-right" 
+                routerLink="/gifts" class="p-button-outlined p-button-success p-3 px-5 font-bold">
+            </button>
+        </div>
+        }
+    </div>
+</div>
+
+<p-dialog 
+    header="פרטי תשלום מאובטח" 
+    [(visible)]="paymentVisible" 
+    (onHide)="isOrdered = false"
+    [modal]="true" 
+    [style]="{ width: '450px' }"
+    styleClass="cyber-dialog"
+    [draggable]="false" 
+    [resizable]="false">
+    
+    @if (!isOrdered) {
+    <form [formGroup]="paymentForm" (ngSubmit)="processPayment()" class="flex flex-column gap-3 mt-3" dir="rtl">
+        <div class="field">
+            <label class="cyber-label">תעודת זהות (בעל הכרטיס)</label>
+            <p-inputMask mask="999999999" formControlName="idNumber" placeholder="123456789" styleClass="cyber-input w-full"></p-inputMask>
+            <small class="p-error block mt-1" *ngIf="paymentForm.get('idNumber')?.invalid && paymentForm.get('idNumber')?.dirty">יש להזין 9 ספרות תקינות</small>
+        </div>
+
+        <div class="field">
+            <label class="cyber-label">מספר כרטיס</label>
+            <p-inputMask mask="9999-9999-9999-9999" formControlName="cardNumber" placeholder="0000-0000-0000-0000" styleClass="cyber-input w-full"></p-inputMask>
+        </div>
+
+        <div class="flex gap-3">
+            <div class="field flex-1">
+                <label class="cyber-label">תוקף</label>
+                <p-inputMask mask="99/99" formControlName="expiry" placeholder="MM/YY" styleClass="cyber-input w-full"></p-inputMask>
+            </div>
+            <div class="field flex-1">
+                <label class="cyber-label">CVV</label>
+                <p-inputMask mask="999" formControlName="cvv" placeholder="123" styleClass="cyber-input w-full"></p-inputMask>
+            </div>
+        </div>
+
+        <div class="summary-box-cyber p-3 border-round-lg mb-3 mt-2 flex justify-content-between align-items-center">
+            <span class="font-bold text-400">סה"כ לתשלום:</span>
+            <span class="text-xl font-bold text-primary">₪{{totalPrice()}}</span>
+        </div>
+
+        <button pButton [label]="buttonLabel" type="submit" [disabled]="paymentForm.invalid || isProcessing" [loading]="isProcessing" class="add-to-cart-glow w-full py-3 font-bold text-lg"></button>
+    </form>
+    } @else {
+    <div class="text-center py-5" dir="rtl">
+        <div class="success-animation mb-4">
+            <i class="pi pi-check-circle text-primary" style="font-size: 5rem; text-shadow: 0 0 20px rgba(0, 184, 148, 0.4);"></i>
+        </div>
+        <h2 class="text-white font-bold mb-2">הרכישה בוצעה בהצלחה!</h2>
+        <p class="text-400 mb-4">תודה שקנית אצלנו. פרטי ההזמנה נשלחו למערכת.</p>
+        <button pButton label="סגור" (click)="paymentVisible = false" class="p-button-outlined p-button-success w-full"></button>
+    </div>
+    }
+</p-dialog>

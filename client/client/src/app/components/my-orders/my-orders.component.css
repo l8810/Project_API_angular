@@ -1,0 +1,206 @@
+/* מיכל ראשי */
+.cyber-table-container {
+    background-color: #0d1117;
+    min-height: 100vh;
+}
+
+/* עיצוב כללי של PrimeNG Table */
+:host ::ng-deep .p-datatable-cyber {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* כותרות הטבלה */
+:host ::ng-deep .p-datatable-cyber .p-datatable-thead > tr > th {
+    background: #161b22 !important;
+    color: #8b949e !important;
+    border-bottom: 2px solid #30363d !important;
+    padding: 1.25rem;
+    font-weight: 600;
+}
+
+/* שורות הטבלה */
+:host ::ng-deep .p-datatable-cyber .p-datatable-tbody > tr {
+    background: #0d1117;
+    color: #e6edf3;
+    transition: background 0.2s;
+}
+
+:host ::ng-deep .p-datatable-cyber .p-datatable-tbody > tr:hover {
+    background: #1c2128 !important;
+}
+
+:host ::ng-deep .p-datatable-cyber .p-datatable-tbody > tr > td {
+    padding: 1.25rem;
+    border-bottom: 1px solid #21262d;
+}
+
+/* שורה מורחבת - עיצוב מיוחד */
+.expanded-row-bg {
+    background: #0d1117 !important;
+    padding: 0 !important;
+}
+
+.inner-table-wrapper {
+    background: #161b22;
+    margin: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 184, 148, 0.2);
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+/* טבלה פנימית */
+:host ::ng-deep .p-datatable-inner .p-datatable-thead > tr > th {
+    background: #1c2128 !important;
+    font-size: 0.85rem;
+    padding: 0.75rem;
+}
+
+/* אלמנטים עיצוביים קטנים */
+.price-text {
+    color: #00b894;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.count-badge {
+    background: #30363d;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.inner-item-img {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    transition: transform 0.2s;
+}
+
+.inner-item-img:hover {
+    transform: scale(1.1);
+    border-color: #00b894;
+}
+
+/* כפתורי פעולה */
+:host ::ng-deep .toggler-btn .p-button-icon {
+    color: #00b894 !important;
+}
+
+:host ::ng-deep .cyber-action-btn .p-button-label,
+:host ::ng-deep .cyber-action-btn .p-button-icon {
+    color: #8b949e !important;
+}
+
+:host ::ng-deep .cyber-action-btn:hover .p-button-label {
+    color: #00b894 !important;
+}
+
+.text-primary { color: #00b894 !important; }
+/* צביעת ה-Caption (החלק העליון של הטבלה עם הכפתורים) */
+:host ::ng-deep .p-datatable-cyber .p-datatable-header,
+:host ::ng-deep .p-datatable-cyber .p-datatable-caption {
+    background: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-bottom: none !important;
+    color: white !important;
+}
+
+/* צביעת ה-Paginator (סרגל הדפים למטה) */
+:host ::ng-deep .p-paginator {
+    background: #161b22 !important;
+    border-color: #30363d !important;
+    color: #8b949e !important;
+}
+
+/* צביעת הכפתורים בתוך ה-Paginator */
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page,
+:host ::ng-deep .p-paginator .p-link {
+    color: #8b949e !important;
+    background: transparent !important;
+}
+
+/* הדגשת העמוד הנוכחי בירוק */
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: rgba(0, 184, 148, 0.1) !important;
+    color: #00b894 !important;
+}
+
+/* צביעת הרקע של הדיאלוג (החלק הלבן שראית בצד) */
+:host ::ng-deep .p-dialog .p-dialog-header,
+:host ::ng-deep .p-dialog .p-dialog-content {
+    background-color: #161b22 !important;
+}
+.total-orders-badge {
+    background: #161b22;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    width: fit-content;
+}
+/* יצירת רווח בין ה-Caption לבין הכותרות של הטבלה */
+:host ::ng-deep .p-datatable-cyber .p-datatable-header,
+:host ::ng-deep .p-datatable-cyber .p-datatable-caption {
+    margin-bottom: 1rem !important;
+    border-bottom: 1px solid #30363d !important; /* אופציונלי: קו תחתון לסגירה */
+    border-radius: 12px 12px 0 0 !important; /* עיגול פינות עליונות */
+}
+
+/* עיגול פינות לכותרת הטבלה כדי שלא תיראה חתוכה בגלל הרווח */
+:host ::ng-deep .p-datatable-cyber .p-datatable-wrapper {
+    border-top: 1px solid #30363d !important;
+    border-radius: 8px !important;
+}
+/* מצב היסטוריה ריקה */
+.empty-orders-container {
+    background: #161b22;
+    border: 1px dashed rgba(0, 184, 148, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.empty-icon-wrapper {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+}
+
+.empty-icon-wrapper i {
+    opacity: 0.4;
+    filter: drop-shadow(0 0 10px rgba(0, 184, 148, 0.1));
+}
+
+/* אפקט טבעת פועמת מאחורי האייקון */
+.pulse-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: rgba(0, 184, 148, 0.1);
+    border-radius: 50%;
+    z-index: -1;
+    animation: cyber-pulse 2s infinite;
+}
+
+@keyframes cyber-pulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+}
+
+/* כפתור החזרה */
+:host ::ng-deep .p-button-success.p-button-outlined {
+    border-color: #00b894 !important;
+    color: #00b894 !important;
+    transition: all 0.3s;
+}
+
+:host ::ng-deep .p-button-success.p-button-outlined:hover {
+    background: rgba(0, 184, 148, 0.1) !important;
+    box-shadow: 0 0 20px rgba(0, 184, 148, 0.2) !important;
+}

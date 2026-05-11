@@ -1,0 +1,210 @@
+<div class="dashboard-wrapper p-4" dir="rtl">
+    <p-toast />
+
+    <div class="flex align-items-center gap-3 mb-4 mt-2">
+        <i class="pi pi-users text-primary text-3xl title-glow"></i>
+        <h1 class="text-3xl font-bold m-0 text-white">ניהול תורמים</h1>
+    </div>
+
+    <div class="cyber-card p-4">
+        <p-toolbar styleClass="cyber-toolbar mb-4">
+            <ng-template pTemplate="start">
+                <p-button 
+                    label="תורם חדש" 
+                    icon="pi pi-plus" 
+                    (onClick)="openNew()" 
+                    class="add-to-cart-glow" 
+                />
+            </ng-template>
+            <ng-template pTemplate="end">
+                <p-button 
+                    label="ייצא" 
+                    icon="pi pi-upload" 
+                    severity="secondary" 
+                    [outlined]="true"
+                    (onClick)="exportCSV($event)" 
+                    class="cyber-secondary-btn"
+                />
+            </ng-template>
+        </p-toolbar>
+
+        <p-table
+            #dt
+            [value]="donors()"
+            [rows]="10"
+            [paginator]="true"
+            [globalFilterFields]="['name', 'email', 'phone', 'address']"
+            [tableStyle]="{ 'min-width': '75rem' }"
+            [rowHover]="true"
+            dataKey="Id"
+            styleClass="p-datatable-cyber"
+            currentPageReportTemplate="מציג {first} עד {last} מתוך {totalRecords} רשומות"
+            [showCurrentPageReport]="true"
+        >
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-between">
+                    <div class="flex flex-column gap-1">
+                        <h5 class="m-0 text-xl font-bold text-white">רשימת תורמים</h5>
+                        <span class="text-sm text-400">{{ donors().length }} תורמים רשומים במערכת</span>
+                    </div>
+                    <p-iconfield>
+                        <p-inputicon class="pi pi-search" />
+                        <input 
+                            pInputText 
+                            type="text" 
+                            (input)="dt.filterGlobal($any($event.target).value, 'contains')" 
+                            placeholder="חיפוש מהיר..." 
+                            class="cyber-input"
+                        />
+                    </p-iconfield>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="name" style="min-width:16rem">
+                        <div class="flex items-center gap-2">
+                            שם <p-sortIcon field="name" />
+                        </div>
+                    </th>
+                    <th pSortableColumn="email" style="min-width:16rem">
+                        <div class="flex items-center gap-2">
+                            אימייל <p-sortIcon field="email" />
+                        </div>
+                    </th>
+                    <th pSortableColumn="phone" style="min-width:12rem">
+                        <div class="flex items-center gap-2">
+                            טלפון <p-sortIcon field="phone" />
+                        </div>
+                    </th>
+                    <th pSortableColumn="address" style="min-width:16rem">
+                        <div class="flex items-center gap-2">
+                            כתובת <p-sortIcon field="address" />
+                        </div>
+                    </th>
+                    <th style="min-width: 12rem">פעולות</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-donor>
+                <tr>
+                    <td class="font-bold">{{ donor.name }}</td>
+                    <td class="text-400">{{ donor.email }}</td>
+                    <td class="text-primary">{{ donor.phone }}</td>
+                    <td class="description-cell text-400">{{ donor.address }}</td>
+                    <td>
+                        <div class="flex gap-2">
+                            <p-button 
+                                icon="pi pi-pencil" 
+                                [rounded]="true" 
+                                [text]="true"
+                                (click)="editDonor(donor)" 
+                                class="edit-btn"
+                            />
+                            <p-button 
+                                icon="pi pi-trash" 
+                                severity="danger" 
+                                [rounded]="true" 
+                                [text]="true"
+                                (click)="deleteDonor(donor)" 
+                                class="delete-btn"
+                            />
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <p-dialog 
+        [(visible)]="donorDialog" 
+        [style]="{ width: '480px' }" 
+        header="פרטי תורם" 
+        [modal]="true"
+        [draggable]="false"
+        [resizable]="false"
+        styleClass="cyber-dialog"
+    >
+        <ng-template pTemplate="content">
+            <div class="p-fluid mt-3" dir="rtl">
+                <div class="field mb-4">
+                    <label for="name" class="cyber-label">שם מלא</label>
+                    <input 
+                        type="text" 
+                        pInputText 
+                        id="name" 
+                        [(ngModel)]="donor.name"
+                        class="cyber-input"
+                        [ngClass]="{'ng-invalid ng-dirty': submitted && !donor.name}"
+                    />
+                    <small class="p-error block mt-1" *ngIf="submitted && !donor.name">
+                        שם הוא שדה חובה
+                    </small>
+                </div>
+                
+                <div class="field mb-4">
+                    <label for="email" class="cyber-label">אימייל</label>
+                    <input 
+                        type="email" 
+                        pInputText 
+                        id="email" 
+                        [(ngModel)]="donor.email"
+                        class="cyber-input"
+                        [ngClass]="{'ng-invalid ng-dirty': submitted && !donor.email}"
+                    />
+                    <small class="p-error block mt-1" *ngIf="submitted && !donor.email">
+                        אימייל הוא שדה חובה
+                    </small>
+                </div>
+                
+                <div class="field mb-4">
+                    <label for="phone" class="cyber-label">טלפון</label>
+                    <input 
+                        type="text" 
+                        pInputText 
+                        id="phone" 
+                        [(ngModel)]="donor.phone"
+                        class="cyber-input"
+                        [ngClass]="{'ng-invalid ng-dirty': submitted && !donor.phone}"
+                    />
+                    <small class="p-error block mt-1" *ngIf="submitted && !donor.phone">
+                        טלפון הוא שדה חובה
+                    </small>
+                </div>
+                
+                <div class="field">
+                    <label for="address" class="cyber-label">כתובת</label>
+                    <input 
+                        type="text" 
+                        pInputText 
+                        id="address" 
+                        [(ngModel)]="donor.address"
+                        class="cyber-input"
+                        [ngClass]="{'ng-invalid ng-dirty': submitted && !donor.address}"
+                    />
+                    <small class="p-error block mt-1" *ngIf="submitted && !donor.address">
+                        כתובת היא שדה חובה
+                    </small>
+                </div>
+            </div>
+        </ng-template>
+        
+        <ng-template pTemplate="footer">
+            <p-button 
+                label="ביטול" 
+                icon="pi pi-times"
+                [text]="true"
+                (onClick)="hideDialog()" 
+                class="cyber-secondary-btn"
+            />
+            <p-button 
+                label="שמור" 
+                icon="pi pi-check" 
+                (onClick)="saveDonor()" 
+                class="add-to-cart-glow"
+            />
+        </ng-template>
+    </p-dialog>
+
+    <p-confirmdialog styleClass="cyber-dialog" [style]="{ width: '450px' }" />
+</div>

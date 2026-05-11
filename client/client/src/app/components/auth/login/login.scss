@@ -1,0 +1,184 @@
+/* רקע כללי של הדף */
+.login-page-container {
+    background-color: #0d1117;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* כרטיס הכניסה */
+.cyber-card {
+    background: #161b22;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* אייקון היהלום */
+.diamond-icon-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.diamond-icon {
+    width: 60px;
+    height: 60px;
+    background: #0d1117;
+    border: 2px solid #00b894;
+    transform: rotate(45deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(0, 184, 148, 0.3);
+}
+
+.diamond-icon i {
+    transform: rotate(-45deg); /* תיקון זווית האייקון */
+}
+
+/* תוויות */
+.cyber-label {
+    color: #8b949e !important;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+/* עיצוב שדות קלט וקבוצות קלט */
+:host ::ng-deep .p-inputgroup-addon {
+    background: #0d1117 !important;
+    border: 1px solid #30363d !important;
+    border-left: none !important;
+    color: #8b949e;
+}
+
+:host ::ng-deep .cyber-input, 
+:host ::ng-deep .p-inputtext {
+    background-color: #0d1117 !important;
+    color: white !important;
+    border: 1px solid #30363d !important;
+    font-family: inherit !important;
+    padding: 0.8rem !important;
+}
+
+:host ::ng-deep .p-inputtext:focus {
+    border-color: #00b894 !important;
+    box-shadow: 0 0 0 1px rgba(0, 184, 148, 0.2) !important;
+}
+
+/* כפתור התחברות */
+.add-to-cart-glow {
+    background: #00b894 !important;
+    border: none !important;
+    color: #0d1117 !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
+}
+
+.add-to-cart-glow:hover:not(:disabled) {
+    box-shadow: 0 0 25px rgba(0, 184, 148, 0.5);
+    transform: translateY(-2px);
+}
+
+.add-to-cart-glow:disabled {
+    background: #21262d !important;
+    color: #484f58 !important;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* אלמנטים נוספים */
+.text-400 { color: #8b949e !important; }
+.text-primary { color: #00b894 !important; }
+.title-glow {
+    text-shadow: 0 0 20px rgba(0, 184, 148, 0.2);
+}
+
+/* התאמת ה-Password של PrimeNG */
+:host ::ng-deep .p-password-input {
+    width: 100%;
+}
+/* המיכל הלבן/כהה הראשי - קטן יותר */
+.cyber-card {
+    background: #161b22;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    width: 350px; /* הקטנת הרוחב הכללי */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* סידור השדות שיהיו באותו אורך בדיוק */
+.input-field-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.input-with-icon {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* עיצוב אחיד לאינפוטים */
+:host ::ng-deep .input-with-icon input,
+:host ::ng-deep .p-password,
+:host ::ng-deep .cyber-input-inner {
+    width: 100% !important;
+    background: #0d1117 !important;
+    color: white !important;
+    border: 1px solid #30363d !important;
+    padding: 10px 40px 10px 12px !important; /* רווח לימין בשביל האייקון */
+    border-radius: 6px !important;
+    font-size: 0.95rem;
+}
+
+/* מיקום האייקון בתוך השדה בצד ימין */
+.input-with-icon > i {
+    position: absolute;
+    right: 12px;
+    color: #8b949e;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* טיפול ספציפי באייקון המנעול בתוך ה-Password של PrimeNG */
+:host ::ng-deep .p-password {
+    display: flex !important;
+}
+
+/* כפתור */
+.add-to-cart-glow {
+    background: #00b894 !important;
+    border: none !important;
+    padding: 12px !important;
+    border-radius: 6px !important;
+    font-weight: bold;
+    color: #0d1117 !important;
+}
+
+/* עיצוב היהלום (קטן יותר) */
+.diamond-icon {
+    width: 50px;
+    height: 50px;
+    background: #0d1117;
+    border: 2px solid #00b894;
+    transform: rotate(45deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+.diamond-icon i { transform: rotate(-45deg); }
+
+.cyber-label {
+    color: #8b949e;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+    text-align: right;
+}
+
+.text-primary { color: #00b894 !important; }
+.text-400 { color: #8b949e !important; }

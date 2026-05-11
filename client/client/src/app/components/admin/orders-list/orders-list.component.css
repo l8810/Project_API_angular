@@ -1,0 +1,82 @@
+/* מיכל ראשי */
+.cyber-table-container {
+    background-color: #0d1117;
+    min-height: 100vh;
+}
+
+/* טיפול בחלק הלבן - ה-Caption וה-Header */
+:host ::ng-deep .p-datatable-cyber .p-datatable-header,
+:host ::ng-deep .p-datatable-cyber .p-datatable-caption {
+    background: #161b22 !important; /* צבע כהה במקום לבן */
+    color: white !important;
+    border: 1px solid #30363d !important;
+    border-bottom: none !important;
+    padding: 1rem !important;
+}
+
+/* עיצוב כללי של הטבלה */
+:host ::ng-deep .p-datatable-cyber {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* שורות הכותרת בתוך הטבלה */
+:host ::ng-deep .p-datatable-cyber .p-datatable-thead > tr > th {
+    background: #161b22 !important;
+    color: #8b949e !important;
+    border-bottom: 2px solid #30363d !important;
+    padding: 1.25rem;
+}
+
+/* שורות הטבלה */
+:host ::ng-deep .p-datatable-cyber .p-datatable-tbody > tr {
+    background: #0d1117;
+    color: #e6edf3;
+}
+
+:host ::ng-deep .p-datatable-cyber .p-datatable-tbody > tr:hover {
+    background: #1c2128 !important;
+}
+
+/* תג סך הזמנות למעלה */
+.total-orders-badge {
+    background: #161b22;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    width: fit-content;
+}
+
+/* אלמנטים נוספים */
+.text-primary { color: #00b894 !important; }
+.price-text { color: #00b894; font-weight: bold; }
+.count-badge { background: #30363d; padding: 4px 12px; border-radius: 20px; }
+
+.inner-table-wrapper {
+    background: #161b22;
+    margin: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 184, 148, 0.2);
+}
+
+.inner-item-img {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+}
+/* יצירת רווח בין ה-Caption לבין הכותרות של הטבלה */
+:host ::ng-deep .p-datatable-cyber .p-datatable-header,
+:host ::ng-deep .p-datatable-cyber .p-datatable-caption {
+    margin-bottom: 1rem !important;
+    border-bottom: 1px solid #30363d !important; /* אופציונלי: קו תחתון לסגירה */
+    border-radius: 12px 12px 0 0 !important; /* עיגול פינות עליונות */
+}
+
+/* עיגול פינות לכותרת הטבלה כדי שלא תיראה חתוכה בגלל הרווח */
+:host ::ng-deep .p-datatable-cyber .p-datatable-wrapper {
+    border-top: 1px solid #30363d !important;
+    border-radius: 8px !important;
+}

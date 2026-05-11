@@ -1,0 +1,77 @@
+<div class="sidebar">
+  <div class="brand-wrapper">
+    <div class="luxury-logo">
+      <div class="logo-box">
+        <span class="box-inner"></span>
+      </div>
+      <div class="logo-name">
+        <span class="top-text">CHINESE</span>
+        <span class="bottom-text">AUCTION</span>
+      </div>
+    </div>
+  </div>
+  <div class="divider-line"></div>
+
+  <nav class="menu-items">
+    <p class="menu-label">תפריט</p>
+
+    <ng-container *ngIf="isAdmin">
+      <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-item">
+        <i class="pi pi-th-large"></i> לוח בקרה
+      </a>
+      <a routerLink="/admin/gifts" routerLinkActive="active" class="nav-item">
+        <i class="pi pi-gift"></i> ניהול מתנות
+      </a>
+      <a routerLink="/admin/donors" routerLinkActive="active" class="nav-item">
+        <i class="pi pi-users"></i> ניהול תורמים
+      </a>
+      <a routerLink="/admin/orders" routerLinkActive="active" class="nav-item">
+        <i class="pi pi-shopping-bag"></i> ניהול רכישות
+      </a>
+    </ng-container>
+
+    <ng-container *ngIf="!isAdmin">
+      <a routerLink="/home" routerLinkActive="active" class="nav-item">
+        <i class="pi pi-home"></i> דף הבית
+      </a>
+      <a routerLink="/gifts" routerLinkActive="active" class="nav-item">
+        <i class="pi pi-gift"></i> מתנות
+      </a>
+    </ng-container>
+
+    <ng-container *ngIf="!isAdmin && isLoggedIn()">
+      <a routerLink="/cart" routerLinkActive="active" class="nav-item cart-item">
+        <div class="icon-wrapper">
+          <i class="pi pi-shopping-cart"></i>
+          <span class="badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
+        </div>
+        <span class="nav-text">סל קניות</span>
+      </a>
+      <a routerLink="/orders" routerLinkActive="active" class="nav-item">
+        <i class="pi pi-history"></i> רכישות שלי
+      </a>
+    </ng-container>
+
+
+    <ng-container *ngIf="!isLoggedIn()">
+      <a routerLink="/login" routerLinkActive="active" class="nav-item">
+        <i class="pi pi-sign-in"></i> כניסה
+      </a>
+      <a routerLink="/register" routerLinkActive="active" class="nav-item">
+        <i class="pi pi-user-plus"></i> הרשמה
+      </a>
+    </ng-container>
+  </nav>
+
+  <ng-container *ngIf="isLoggedIn()">
+  <div class="user-footer">
+    <div class="user-info">
+      <span class="user-name">{{userName}}</span>
+      <span class="user-email">{{userEmail}}</span>
+    </div>
+    <button class="logout-btn" (click)="logout()">
+      <i class="pi pi-sign-out"></i> יציאה
+    </button>
+  </div>
+  </ng-container>
+</div>

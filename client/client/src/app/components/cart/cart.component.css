@@ -1,0 +1,339 @@
+/* רקע כללי של הדף */
+.dashboard-wrapper {
+    background-color: #0d1117 !important; /* כהה עמוק */
+    min-height: 100vh;
+}
+
+/* כרטיסי פריטים בסל */
+.premium-gift-card {
+    background: #161b22 !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: 0.3s;
+}
+
+.premium-gift-card:hover {
+    border-color: rgba(0, 184, 148, 0.4) !important;
+}
+
+/* תמונת מוצר */
+.gift-img-premium-cart {
+    width: 75px; 
+    height: 75px; 
+    object-fit: cover; 
+    border-radius: 10px;
+    border: 1px solid rgba(0, 184, 148, 0.2);
+}
+
+/* עיצוב בורר כמות */
+.qty-selector {
+    background: #0d1117;
+    border-radius: 30px;
+    padding: 2px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.qty-btn {
+    background: transparent;
+    border: none;
+    color: #00b894;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+.qty-value {
+    color: white;
+    font-weight: bold;
+    min-width: 25px;
+    text-align: center;
+}
+
+/* מחיר וזוהר */
+.price-tag-sm {
+    color: #00b894;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(0, 184, 148, 0.3);
+}
+
+.price-val {
+    color: #00b894;
+    font-size: 2rem;
+    font-weight: 900;
+    text-shadow: 0 0 15px rgba(0, 184, 148, 0.5);
+}
+
+/* כפתור תשלום זוהר */
+.add-to-cart-glow {
+    background: #00b894 !important;
+    border: none !important;
+    color: #0d1117 !important;
+    box-shadow: 0 0 20px rgba(0, 184, 148, 0.4) !important;
+}
+
+.hover-red:hover {
+    color: #ff4d4d !important;
+}
+/* עיצוב הדיאלוג הכללי - רקע וגבולות */
+:host ::ng-deep .cyber-dialog .p-dialog-content,
+:host ::ng-deep .cyber-dialog .p-dialog-header {
+    background: #161b22 !important; /* צבע כהה תואם לסל */
+    color: white !important;
+    border: none !important;
+}
+
+:host ::ng-deep .cyber-dialog .p-dialog-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 1.5rem !important;
+}
+
+:host ::ng-deep .cyber-dialog .p-dialog-content {
+    padding: 2rem !important;
+}
+
+/* סגירת הדיאלוג (ה-X) */
+:host ::ng-deep .cyber-dialog .p-dialog-header-icon {
+    color: #8b949e !important;
+}
+
+/* עיצוב שדות הקלט (InputMask) */
+:host ::ng-deep .cyber-input input {
+    background: #0d1117 !important;
+    border: 1px solid rgba(0, 184, 148, 0.2) !important;
+    color: white !important;
+    padding: 0.75rem !important;
+    border-radius: 8px !important;
+}
+
+:host ::ng-deep .cyber-input input:focus {
+    border-color: #00b894 !important;
+    box-shadow: 0 0 8px rgba(0, 184, 148, 0.4) !important;
+}
+
+/* תיבת סיכום פנימית */
+.summary-box-cyber {
+    background: rgba(0, 184, 148, 0.05);
+    border: 1px dashed rgba(0, 184, 148, 0.3);
+}
+
+/* טקסטים קטנים */
+.text-300 { color: #d1d5db !important; }
+.text-400 { color: #9ca3af !important; }
+
+/* תיקון צבע הכפתור בתוך הדיאלוג */
+:host ::ng-deep .cyber-dialog .p-button-success.p-button-outlined {
+    color: #00b894 !important;
+    border-color: #00b894 !important;
+}
+/* מצב סל ריק */
+.empty-cart-state {
+    background: #161b22;
+    border: 2px dashed #30363d;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.empty-icon-wrapper {
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+}
+
+.empty-icon-wrapper .pi-shopping-bag {
+    opacity: 0.3;
+}
+
+.empty-icon-wrapper .pi-times-circle {
+    background: #161b22;
+    border-radius: 50%;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* התאמת הכפתור בתוך הסל הריק */
+:host ::ng-deep .p-button-success.p-button-outlined {
+    border-color: #00b894 !important;
+    color: #00b894 !important;
+    transition: all 0.3s;
+}
+/* --- עיצוב הדיאלוג (Cyber Dialog) --- */
+:host ::ng-deep .cyber-dialog .p-dialog-header,
+:host ::ng-deep .cyber-dialog .p-dialog-content,
+:host ::ng-deep .cyber-dialog .p-dialog-footer {
+    background-color: #161b22 !important; /* רקע כהה של הדיאלוג */
+    color: #e6edf3 !important;
+    border: none !important;
+}
+
+/* --- עיצוב שדות הקלט (InputMask ו-InputText) --- */
+/* זה תופס גם את האינפוט שבתוך ה-Mask */
+:host ::ng-deep .cyber-input input, 
+:host ::ng-deep .p-inputtext {
+    background-color: #0d1117 !important; /* רקע שחור עמוק */
+    color: white !important;
+    border: 1px solid #30363d !important; /* גבול אפרפר דק */
+    font-family: inherit !important;
+    padding: 0.75rem !important;
+    border-radius: 8px !important;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* אפקט פוקוס - זוהר ירוק */
+:host ::ng-deep .cyber-input input:focus,
+:host ::ng-deep .p-inputtext:focus {
+    border-color: #00b894 !important;
+    box-shadow: 0 0 0 2px rgba(0, 184, 148, 0.2) !important;
+    outline: none !important;
+}
+
+/* --- תוויות (Labels) --- */
+.cyber-label {
+    color: #8b949e !important;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+    font-size: 0.9rem;
+}
+
+/* --- תיבת סיכום המחיר --- */
+.summary-box-cyber {
+    background: #0d1117 !important;
+    border: 1px dashed #30363d !important;
+}
+
+/* כפתור ה-X לסגירה */
+:host ::ng-deep .cyber-dialog .p-dialog-header-icon {
+    color: #8b949e !important;
+}
+/* רקע כללי של הדף */
+.dashboard-wrapper {
+    background-color: #0d1117 !important;
+    min-height: 100vh;
+}
+
+/* כרטיסי פריטים בסל */
+.premium-gift-card {
+    background: #161b22 !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: 0.3s;
+}
+
+.premium-gift-card:hover {
+    border-color: rgba(0, 184, 148, 0.4) !important;
+}
+
+/* תמונת מוצר */
+.gift-img-premium-cart {
+    width: 75px; 
+    height: 75px; 
+    object-fit: cover; 
+    border-radius: 10px;
+    border: 1px solid rgba(0, 184, 148, 0.2);
+}
+
+/* עיצוב בורר כמות */
+.qty-selector {
+    background: #0d1117;
+    border-radius: 30px;
+    padding: 2px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.qty-btn {
+    background: transparent;
+    border: none;
+    color: #00b894;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+.qty-value {
+    color: white;
+    font-weight: bold;
+    min-width: 25px;
+    text-align: center;
+}
+
+/* מחיר וזוהר */
+.price-tag-sm {
+    color: #00b894;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(0, 184, 148, 0.3);
+}
+
+.price-val {
+    color: #00b894;
+    font-size: 2rem;
+    font-weight: 900;
+    text-shadow: 0 0 15px rgba(0, 184, 148, 0.5);
+}
+
+/* כפתור תשלום זוהר */
+.add-to-cart-glow {
+    background: #00b894 !important;
+    border: none !important;
+    color: #0d1117 !important;
+    box-shadow: 0 0 20px rgba(0, 184, 148, 0.4) !important;
+}
+
+.hover-red:hover {
+    color: #ff4d4d !important;
+}
+
+/* --- תיקון אייקונים נעלמים (PI) --- */
+:host ::ng-deep i.pi {
+    font-family: 'primeicons' !important;
+    font-style: normal;
+}
+
+/* עיצוב הדיאלוג הכללי */
+:host ::ng-deep .cyber-dialog .p-dialog-content,
+:host ::ng-deep .cyber-dialog .p-dialog-header {
+    background: #161b22 !important;
+    color: white !important;
+    border: none !important;
+}
+
+:host ::ng-deep .cyber-dialog .p-dialog-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 1.5rem !important;
+}
+
+/* עיצוב שדות הקלט */
+:host ::ng-deep .cyber-input input {
+    background: #0d1117 !important;
+    border: 1px solid rgba(0, 184, 148, 0.2) !important;
+    color: white !important;
+    padding: 0.75rem !important;
+}
+
+.cyber-label {
+    color: #8b949e !important;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.summary-box-cyber {
+    background: #0d1117 !important;
+    border: 1px dashed #30363d !important;
+}
+
+/* אנימציית הצלחה */
+.success-animation {
+    animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}

@@ -1,0 +1,401 @@
+/* פלטת צבעים יוקרתית */
+.dashboard-wrapper {
+    background-color: #0f1115; /* רקע שחור עמוק של אפליקציות SaaS */
+    min-height: 100vh;
+}
+
+/* כרטיסי סטטיסטיקה */
+.premium-card {
+    background: #1a1d23; /* צבע ה-Sidebar שלך */
+    border: 1px solid #2d323e;
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.premium-card:hover {
+    transform: translateY(-5px);
+    border-color: #4b5563;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+.card-label {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.card-value {
+    color: #ffffff;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.card-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    font-size: 1.4rem;
+}
+
+.icon-green { color: #10b981; }
+.icon-blue { color: #3b82f6; }
+.icon-orange { color: #f59e0b; }
+.icon-purple { color: #a855f7; }
+
+/* כרטיסי פעולות ורשימות */
+.action-card, .list-card {
+    background: #1a1d23;
+    border: 1px solid #2d323e;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.bg-card-header {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.list-row {
+    border-bottom: 1px solid #2d323e;
+    transition: background 0.2s;
+}
+
+.list-row:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.gift-avatar {
+    width: 42px;
+    height: 42px;
+    background: #0f1115;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #2d323e;
+}
+
+/* רכיבים קטנים */
+.status-ready {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    font-size: 0.75rem;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.btn-glow {
+    background: #ef4444 !important;
+    border: none !important;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+}
+
+.custom-refresh-btn {
+    border: 1px solid #2d323e !important;
+    color: #94a3b8 !important;
+}
+
+.divider {
+    height: 1px;
+    background: #2d323e;
+    margin: 1.5rem 0;
+}
+
+.text-100 { color: #f8f9fa; }
+
+/* פס גלילה */
+.custom-scroll::-webkit-scrollbar { width: 6px; }
+.custom-scroll::-webkit-scrollbar-thumb {
+    background: #353b45;
+    border-radius: 10px;
+}
+
+/* אנימציות */
+@keyframes bounce { 
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+.animate-bounce { animation: bounce 0.8s infinite; }
+
+/* עיצוב כפתור דוח הזוכים */
+.custom-report-btn {
+    border-color: #3b82f6 !important; /* כחול מקצועי */
+    color: #93c5fd !important;
+    background: transparent !important;
+    transition: all 0.2s ease;
+}
+
+.custom-report-btn:hover {
+    background: rgba(59, 130, 246, 0.1) !important;
+    border-color: #60a5fa !important;
+    color: #ffffff !important;
+}
+
+/* קו מפריד אלגנטי */
+.divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #2d323e, transparent);
+    margin: 10px 0;
+}
+/* תיקון לדיאלוג - מראה פחות כהה ויותר מודרני */
+::ng-deep .dark-dialog .p-dialog-content, 
+::ng-deep .dark-dialog .p-dialog-header,
+::ng-deep .dark-dialog .p-dialog-footer {
+    background: #2d333b !important; /* אפור-כחלחל רך יותר */
+    color: #adbac7 !important;
+    border-color: #444c56 !important;
+}
+
+::ng-deep .dark-dialog .p-dialog-header .p-dialog-title {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* עיצוב הטבלה בתוך הדיאלוג */
+::ng-deep .dark-dialog .p-datatable .p-datatable-thead > tr > th {
+    background: #22272e !important; /* גוון כהה במעט מהרקע ליצירת עומק */
+    color: #768390 !important;
+    border-color: #444c56 !important;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+::ng-deep .dark-dialog .p-datatable .p-datatable-tbody > tr {
+    background: #2d333b !important;
+    color: #adbac7 !important;
+    transition: background 0.2s;
+}
+
+/* אפקט Hover עדין לשורות בטבלה */
+::ng-deep .dark-dialog .p-datatable .p-datatable-tbody > tr:hover {
+    background: #373e47 !important;
+}
+
+::ng-deep .dark-dialog .p-datatable .p-datatable-tbody > tr > td {
+    border-color: #444c56 !important;
+    padding: 1rem;
+}
+
+/* כפתורי הדיאלוג */
+::ng-deep .dark-dialog .p-button.p-button-text {
+    color: #768390 !important;
+}
+
+::ng-deep .dark-dialog .p-button.p-button-text:hover {
+    background: rgba(144, 157, 171, 0.1) !important;
+    color: #ffffff !important;
+}
+/* מיכל הרשימה הראשי */
+.list-card-container {
+    background: #1e252e; /* Slate פחות כהה */
+    border: 1px solid #333b45;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+.bg-glass-header {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(10px);
+}
+
+/* כרטיס מתנה בודד */
+.gift-item-card {
+    background: #262c36;
+    border: 1px solid #333b45;
+    border-radius: 14px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gift-item-card:hover:not(.item-disabled) {
+    transform: translateX(-5px);
+    background: #2d3440;
+    border-color: #4ade80; /* גבול ירוק עדין ב-Hover */
+}
+
+/* אייקון המתנה */
+.gift-icon-container {
+    width: 45px;
+    height: 45px;
+    background: #1e252e;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    border: 1px solid #333b45;
+}
+
+.ready-glow {
+    box-shadow: 0 0 15px rgba(20, 185, 129, 0.15);
+    border-color: rgba(20, 185, 129, 0.3) !important;
+}
+
+/* טקסט */
+.gift-name {
+    color: #f8f9fa;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.item-disabled {
+    opacity: 0.5;
+    filter: grayscale(0.8);
+}
+
+/* כפתור הגרלה */
+.raffle-btn {
+    padding: 0.5rem 1.2rem !important;
+    font-weight: 700 !important;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    border: none !important;
+}
+
+.raffle-btn:hover {
+    filter: brightness(1.1);
+    transform: scale(1.05);
+}
+
+/* תגית כמות */
+.custom-badge {
+    background: #3b82f6 !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.8rem !important;
+    border-radius: 8px !important;
+}
+
+/* מצב ריק */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.empty-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+/* עיצוב הדיאלוג הכללי */
+::ng-deep .premium-raffle-dialog .p-dialog-content {
+    background: #1e252e !important; /* אפור-כחלחל מודרני */
+    border-radius: 24px !important;
+    border: 1px solid #333b45 !important;
+    padding: 0 !important;
+    overflow: hidden;
+}
+
+/* כרטיס שם הזוכה */
+.winner-card {
+    background: #262c36;
+    border: 1px solid #3d4450;
+    border-radius: 18px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.winner-label {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.winner-name {
+    color: #4ade80; /* ירוק רענן */
+    display: block;
+    text-shadow: 0 0 20px rgba(74, 222, 128, 0.2);
+}
+
+/* כפתור אישור */
+.custom-confirm-btn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    border: none !important;
+    border-radius: 14px !important;
+    font-weight: 700 !important;
+    height: 3.5rem;
+    box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3) !important;
+}
+
+/* ספינר מותאם */
+::ng-deep .custom-spinner .p-progress-spinner-circle {
+    stroke: #2dd4bf !important;
+}
+
+/* אפקטים ויזואליים */
+.trophy-icon {
+    font-size: 5.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.trophy-wrapper {
+    position: relative;
+    padding: 20px;
+}
+
+.trophy-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(234, 179, 8, 0.2) 0%, transparent 70%);
+    z-index: 1;
+}
+
+/* אנימציות */
+@keyframes bounceSlow {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.05); }
+}
+
+.animate-bounce-slow {
+    animation: bounceSlow 2s infinite ease-in-out;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* איחוד הרקעים של פעולות ניהול ורשימת המתנות */
+.action-card, .list-card-container {
+    background: #1a1d23 !important; /* הגוון הכהה של הסיידבר */
+    border: 1px solid #2d323e !important; /* גבול עדין ואחיד */
+    border-radius: 16px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+    height: 100%; /* דואג ששניהם יהיו באותו גובה אם הם באותה שורה */
+    overflow: hidden;
+}
+
+/* אחידות לכותרות בתוך הפאנלים */
+.bg-glass-header, .action-card h3 {
+    background: rgba(255, 255, 255, 0.02) !important;
+    padding: 1.25rem !important;
+    margin: 0 !important;
+    border-bottom: 1px solid #2d323e !important;
+}
+
+/* התאמת ריווח פנימי לפעולות ניהול (כי הורדנו את ה-Padding מהכרטיס עצמו לאחידות) */
+.action-card .flex.flex-column {
+    padding: 1.5rem;
+}
+

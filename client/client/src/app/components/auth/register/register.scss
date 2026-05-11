@@ -1,0 +1,115 @@
+/* פתרון לבעיית הרקע הלבן - להוסיף ב-styles.css הגלובלי */
+html, body {
+    background-color: #0d1117 !important; /* הצבע הכהה של המערכת */
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+/* מוודא שהקומפוננטה עצמה תופסת את כל הגובה */
+:host {
+    display: block;
+    background-color: #0d1117;
+    min-height: 100vh;
+}
+
+/* אם מופיע פס לבן מסביב לכרטיס */
+.login-page-container {
+    background-color: #0d1117 !important;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* מיכל הריבוע הקומפקטי */
+.cyber-card {
+    background: #161b22;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    width: 350px; 
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* סידור השדות */
+.input-field-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.input-with-icon {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* עיצוב אחיד לאינפוטים - דריסת PrimeNG */
+:host ::ng-deep .input-with-icon input,
+:host ::ng-deep .p-password,
+:host ::ng-deep .cyber-input-inner {
+    width: 100% !important;
+    background: #0d1117 !important;
+    color: white !important;
+    border: 1px solid #30363d !important;
+    padding: 10px 40px 10px 12px !important; /* רווח מימין לאייקון */
+    border-radius: 6px !important;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+:host ::ng-deep .p-inputtext:focus {
+    border-color: #00b894 !important;
+    box-shadow: 0 0 0 1px rgba(0, 184, 148, 0.2) !important;
+}
+
+/* מיקום האייקון */
+.input-with-icon > i {
+    position: absolute;
+    right: 12px;
+    color: #8b949e;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* כפתור הרשמה זוהר */
+.add-to-cart-glow {
+    background: #00b894 !important;
+    border: none !important;
+    padding: 12px !important;
+    color: #0d1117 !important;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
+}
+
+.add-to-cart-glow:disabled {
+    background: #21262d !important;
+    color: #484f58 !important;
+    box-shadow: none;
+}
+
+/* עיצוב היהלום */
+.diamond-icon {
+    width: 50px;
+    height: 50px;
+    background: #0d1117;
+    border: 2px solid #00b894;
+    transform: rotate(45deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+.diamond-icon i { transform: rotate(-45deg); }
+
+.cyber-label {
+    color: #8b949e;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+    text-align: right;
+}
+
+.text-primary { color: #00b894 !important; }
+.text-400 { color: #8b949e !important; }
+.title-glow { text-shadow: 0 0 15px rgba(0, 184, 148, 0.2); }

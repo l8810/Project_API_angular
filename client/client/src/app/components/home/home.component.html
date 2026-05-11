@@ -1,0 +1,54 @@
+<div class="home-wrapper p-4" dir="rtl">
+    <div class="hero-section text-center py-8 border-round-xl mb-6">
+        <div class="glitch-wrapper mb-4">
+            <h1 class="text-6xl font-bold text-white m-0 title-glow">המכירה הסינית <span class="text-primary">2026</span></h1>
+        </div>
+        <p class="text-400 text-xl mb-6 italic">חוויית רכישה טכנולוגית, מתנות יוקרה והזדמנויות של פעם בחיים</p>
+        <ng-container *ngIf="!isAdmin">
+        <div class="flex justify-content-center gap-4">
+            <p-button label="התחל רכישה" icon="pi pi-shopping-bag" 
+                      routerLink="/gifts" class="add-to-cart-glow p-button-lg px-6"></p-button>
+            <!-- <p-button label="היסטוריית רכישות" icon="pi pi-history"
+                      routerLink="/orders" class="cyber-secondary-btn p-button-lg px-6"></p-button> -->
+        </div>
+        </ng-container>
+    </div>
+
+    <div class="grid px-4">
+        <div class="col-12 md:col-4">
+            <div class="stat-card p-4 border-round-xl text-center shadow-glow">
+                <div class="icon-pulse mb-3">
+                    <i class="pi pi-gift text-primary text-4xl"></i>
+                </div>
+                <div class="text-4xl font-bold text-white mb-1">45+</div>
+                <div class="text-500 font-semibold">מתנות יוקרה</div>
+            </div>
+        </div>
+
+<div class="col-12 md:col-4">
+    <div class="stat-card p-4 border-round-xl text-center shadow-glow">
+        <div class="icon-pulse mb-3">
+            <i class="pi pi-clock text-primary text-4xl"></i>
+        </div>
+        <div class="text-4xl font-bold text-white mb-1">
+            {{ countdownText() }}
+        </div>
+        <div class="text-500 font-semibold">זמן לסגירת המכירה</div>
+    </div>
+</div>
+
+        <div class="col-12 md:col-4">
+            <div class="stat-card p-4 border-round-xl text-center shadow-glow">
+                <div class="icon-pulse mb-3">
+                    <i class="pi pi-users text-primary text-4xl"></i>
+                </div>
+                <div class="text-4xl font-bold text-white mb-1">1,200</div>
+                <div class="text-500 font-semibold">משתתפים פעילים</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cyber-bg-elements">
+        <div class="orbit-circle"></div>
+    </div>
+</div>

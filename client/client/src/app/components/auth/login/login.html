@@ -1,0 +1,55 @@
+<div class="login-page-container flex align-items-center justify-content-center">
+  <div class="cyber-card p-4"> <div class="header-minimal text-center mb-4">
+      <div class="diamond-icon-wrapper mb-3">
+        <div class="diamond-icon">
+          <i class="pi pi-shield text-primary"></i>
+        </div>
+      </div>
+      <h2 class="text-white text-2xl font-bold m-0 title-glow">כניסת מנויים</h2>
+      <p class="text-400 text-sm mt-1">ברוכים הבאים למכירה הסינית</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-column gap-3">
+      
+      <div class="input-field-group">
+        <label class="cyber-label">אימייל</label>
+        <div class="input-with-icon">
+          <input 
+            type="text" 
+            pInputText 
+            formControlName="email" 
+          />
+          <i class="pi pi-envelope"></i>
+        </div>
+      </div>
+
+      <div class="input-field-group">
+        <label class="cyber-label">סיסמה</label>
+        <div class="input-with-icon">
+          <p-password 
+            formControlName="password" 
+            [toggleMask]="true" 
+            [feedback]="false" 
+            styleClass="w-full"
+            [minlength]="8"
+            inputStyleClass="cyber-input-inner">
+          </p-password>
+          <i class="pi pi-lock"></i>
+        </div>
+      </div>
+
+      <button 
+        pButton 
+        type="submit" 
+        label="התחברות" 
+        class="add-to-cart-glow mt-2" 
+        [disabled]="loginForm.invalid">
+      </button>
+
+      <div class="register-hint text-center mt-3 text-sm">
+        <span class="text-400">עוד לא רשום?</span> 
+        <a routerLink="/register" class="text-primary no-underline mr-1">צור חשבון חדש</a>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+# ─── Angular / Node ───────────────────────────────────────────────────────────
+node_modules/
+dist/
+tmp/
+out-tsc/
+bazel-out/
+.angular/cache/
+.sass-cache/
+coverage/
+npm-debug.log
+yarn-error.log
+.history/
+
+# ─── ASP.NET Core / Visual Studio ─────────────────────────────────────────────
+**/bin/
+**/obj/
+**/.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vscode/
+*.ncrunch*
+_NCrunch_*
+*.DotSettings.user
+TestResult.xml
+*.VisualState.xml
+.localhistory/
+*.vsidx
+*.db
+*.db-shm
+*.db-wal
+
+# Build artifacts
+**/[Pp]ublish/
+**/[Rr]elease/
+**/[Dd]ebug/
+**/[Bb]uild/
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# ─── Secrets / Config ─────────────────────────────────────────────────────────
+appsettings.Development.json
+appsettings.local.json
+.env
+.env.local
+secrets.json
+
+# ─── Uploaded files (runtime data) ───────────────────────────────────────────
+server/StoreApi/StoreApi/wwwroot/uploads/
+
+# ─── OS Files ─────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,209 @@
+<p-confirmDialog />
+<p-toast />
+
+<div class="dashboard-wrapper p-4">
+    <div class="flex justify-content-between align-items-end mb-6">
+        <div>
+            <span class="text-teal-500 font-bold uppercase tracking-wider text-sm"
+                style="color: #00b894 !important;">System Overview</span>
+            <h1 class="text-4xl font-bold text-white m-0">לוח בקרה - ניהול מכירה</h1>
+        </div>
+        <div class="flex gap-2">
+            <button pButton icon="pi pi-refresh" label="רענן נתונים" (click)="loadAllData()" [loading]="loading()"
+                class="p-button-rounded p-button-text custom-refresh-btn"></button>
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="col-12 md:col-6 lg:col-3">
+            <div [routerLink]="['/admin/orders']" class="premium-card card-green cursor-pointer">
+                <div class="flex justify-content-between">
+                    <div>
+                        <p class="card-label">סה"כ הכנסות</p>
+                        <h2 class="card-value">{{ stats().revenue | number:'1.0-2' }} ₪</h2>
+                    </div>
+                    <div class="card-icon icon-green"><i class="pi pi-wallet"></i></div>
+                </div>
+                <div class="card-footer text-green-400">
+                    <i class="pi pi-chart-line ml-1 text-xs"></i> עסקאות שבוצעו
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-3">
+            <div [routerLink]="['/admin/orders']" class="premium-card card-blue cursor-pointer">
+                <div class="flex justify-content-between">
+                    <div>
+                        <p class="card-label">כרטיסים שנמכרו</p>
+                        <h2 class="card-value">{{ stats().tickets }}</h2>
+                    </div>
+                    <div class="card-icon icon-blue"><i class="pi pi-ticket"></i></div>
+                </div>
+                <div class="card-footer text-blue-400">השתתפויות בהגרלה</div>
+            </div>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-3">
+            <div [routerLink]="['/admin/donors']" class="premium-card card-orange cursor-pointer">
+                <div class="flex justify-content-between">
+                    <div>
+                        <p class="card-label">תורמים רשומים</p>
+                        <h2 class="card-value">{{ stats().donorsCount }}</h2>
+                    </div>
+                    <div class="card-icon icon-orange"><i class="pi pi-users"></i></div>
+                </div>
+                <div class="card-footer text-orange-400">תומכים במכירה</div>
+            </div>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-3">
+            <div [routerLink]="['/admin/gifts']" class="premium-card card-purple cursor-pointer">
+                <div class="flex justify-content-between">
+                    <div>
+                        <p class="card-label">סה"כ מתנות</p>
+                        <h2 class="card-value">{{ stats().giftsCount }}</h2>
+                    </div>
+                    <div class="card-icon icon-purple"><i class="pi pi-gift"></i></div>
+                </div>
+                <div class="card-footer text-purple-400">בקטלוג המכירה</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid mt-6">
+        <div class="col-12 lg:col-4">
+            <div class="action-card shadow-lg p-4 h-full">
+                <h3 class="text-xl font-bold text-white mb-4">פעולות ניהול</h3>
+                <div class="flex flex-column gap-3">
+                    <button pButton label="הגרל את כל המתנות" icon="pi pi-bolt"
+                        class="p-button-danger w-full btn-glow mb-2" (click)="raffleAll()">
+                    </button>
+
+                    <div class="divider"></div>
+                    <button pButton label="צפייה בדוח זוכים" icon="pi pi-print"
+                        class="p-button-outlined w-full custom-report-btn" (click)="winnersDialogVisible.set(true)">
+                    </button>
+
+                    <p class="text-500 text-xs mt-2 text-center">
+                        <i class="pi pi-info-circle ml-1"></i>
+                        ניתן להפיק דוח PDF לאחר סיום ההגרלות
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 lg:col-8">
+            <div class="list-card-container h-full">
+                <div
+                    class="p-4 border-bottom-1 border-700 flex justify-content-between align-items-center bg-glass-header">
+                    <div>
+                        <h3 class="m-0 text-white text-xl font-bold">מתנות להגרלה</h3>
+                        <p class="text-500 text-xs m-0 mt-1">ניהול ומעקב בזמן אמת</p>
+                    </div>
+                    <span class="p-tag custom-badge shadow-2">{{ filteredGifts().length }} מתנות נותרו</span>
+                </div>
+
+                <div class="overflow-auto custom-scroll p-3" style="max-height: 450px;">
+                    <div *ngIf="filteredGifts().length === 0" class="empty-state p-5 text-center">
+                        <div class="empty-icon-wrapper mb-3">
+                            <i class="pi pi-check-circle text-green-500"></i>
+                        </div>
+                        <h4 class="text-white m-0">הכל מוכן!</h4>
+                        <p class="text-500">כל המתנות הוגרלו בהצלחה.</p>
+                    </div>
+
+                    <div *ngFor="let gift of filteredGifts()" class="gift-item-card flex align-items-center p-3 mb-3"
+                        [ngClass]="{'item-disabled': !hasParticipants(gift.id)}">
+
+                        <div class="gift-icon-container ml-3" [class.ready-glow]="hasParticipants(gift.id)">
+                            <img *ngIf="gift.picture" [src]="getImageUrl(gift.picture)" [alt]="gift.name"
+                                style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; cursor: pointer;" />
+                        </div>
+
+                        <div class="flex-grow-1">
+                            <span class="gift-name text-lg block">{{ gift.name }}</span>
+                            <div class="flex align-items-center mt-1">
+                                <ng-container *ngIf="hasParticipants(gift.id); else noParticipants">
+                                    <span class="text-teal-500 text-xs font-medium">
+                                        <i class="pi pi-users ml-1" style="font-size: 0.7rem"></i>
+                                        יש משתתפים - מוכן להגרלה
+                                    </span>
+                                </ng-container>
+                                <ng-template #noParticipants>
+                                    <span class="text-orange-400 text-xs font-medium">
+                                        <i class="pi pi-exclamation-circle ml-1" style="font-size: 0.7rem"></i>
+                                        ממתין לרכישת כרטיסים
+                                    </span>
+                                </ng-template>
+                            </div>
+                        </div>
+
+                        <div class="flex align-items-center">
+                            <button pButton icon="pi pi-play" label="הפעל הגרלה" [disabled]="!hasParticipants(gift.id)"
+                                (click)="raffleSingle(gift.id, gift.name)"
+                                class="p-button-rounded p-button-success raffle-btn shadow-3"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p-dialog [(visible)]="raffleDialogVisible" [modal]="true" [closable]="!isRaffling()" [style]="{ width: '420px' }"
+    [showHeader]="false" styleClass="premium-raffle-dialog">
+
+    <div class="flex flex-column align-items-center p-5 text-center dialog-content-wrapper">
+
+        <div *ngIf="isRaffling()" class="py-4">
+            <p-progressSpinner styleClass="w-5rem h-5rem custom-spinner" strokeWidth="4"></p-progressSpinner>
+            <p class="mt-4 text-500 uppercase tracking-widest text-xs font-bold">תהליך הגרלה בעיצומו</p>
+            <h2 class="text-white text-2xl mt-2 font-medium">מגרילים עבור:</h2>
+            <h1 class="text-teal-400 text-4xl font-bold mt-1 shadow-text">{{ currentRaffleGift() }}</h1>
+        </div>
+
+        <div *ngIf="!isRaffling()" class="winner-container flex flex-column align-items-center animate-fade-in">
+            <div class="trophy-wrapper mb-2">
+                <i class="pi pi-trophy text-yellow-500 trophy-icon animate-bounce-slow"></i>
+                <div class="trophy-glow"></div>
+            </div>
+
+            <h2 class="text-white text-3xl font-bold m-0">יש לנו זוכה!</h2>
+
+            <div class="winner-card p-4 mb-4 w-full">
+                <span class="winner-label block mb-2">הזוכה המאושר/ת:</span>
+                <span class="winner-name text-4xl font-black">{{ winnerName() }}</span>
+            </div>
+
+            <button pButton label="מעולה, סגור" (click)="raffleDialogVisible.set(false)"
+                class="p-button-success w-full p-button-lg custom-confirm-btn"></button>
+        </div>
+    </div>
+</p-dialog>
+<p-dialog header="דוח זוכים - מכירה סינית" [(visible)]="winnersDialogVisible" [modal]="true" [style]="{ width: '50vw' }"
+    styleClass="dark-dialog">
+
+    <p-table [value]="winnersList()" styleClass="p-datatable-striped">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>מתנה</th>
+                <th>שם הזוכה</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-gift>
+            <tr>
+                <td>{{ gift.name }}</td>
+                <td class="font-bold text-teal-400">{{ gift.winnerName }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <ng-template pTemplate="footer">
+        <div class="flex justify-content-end gap-2 p-3">
+            <button pButton label="הורד PDF" icon="pi pi-file-pdf" (click)="downloadWinnersPDF()"
+                class="p-button-danger p-button-outlined">
+            </button>
+            <button pButton label="סגור" (click)="winnersDialogVisible.set(false)"
+                class="p-button-text text-white"></button>
+        </div>
+    </ng-template>
+</p-dialog>

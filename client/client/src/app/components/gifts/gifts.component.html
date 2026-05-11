@@ -1,0 +1,107 @@
+<p-toast />
+
+<div class="dashboard-wrapper p-4">
+    <div class="catalog-header-main flex justify-content-between align-items-center mb-4 p-4">
+        <div class="flex flex-column">
+            <span class="catalog-label">Catalog</span>
+            <h1 class="catalog-title">קטלוג מתנות</h1>
+        </div>
+        <div class="flex align-items-center gap-3">
+            <span class="items-count">סה"כ {{ gifts().length }} פריטים</span>
+            <p-selectbutton [ngModel]="layout()" (ngModelChange)="layout.set($event)" [options]="options"
+                [allowEmpty]="false" class="cyber-select-button">
+                <ng-template #item let-item>
+                    <i [class]="item.icon"></i>
+                </ng-template>
+            </p-selectbutton>
+        </div>
+    </div>
+
+    <p-dataview #dv [value]="gifts()" [layout]="layout()" [paginator]="true" [rows]="9" class="custom-dv">
+        
+        <ng-template #list let-items>
+            <div class="grid grid-nogutter bg-transparent">
+                @for (item of items; track item.id) {
+                <div class="col-12 p-3">
+                    <div class="premium-gift-card list-mode flex align-items-center p-4" [class.sold-out]="item.winnerName">
+                        
+                        <div class="card-actions flex flex-column align-items-start gap-3">
+                            @if (!item.winnerName) {
+                                <div class="qty-selector flex align-items-center">
+                                    <button class="qty-btn" (click)="item.count = (item.count || 1) + 1">+</button>
+                                    <span class="qty-value">{{ item.count || 1 }}</span>
+                                    <button class="qty-btn" (click)="item.count = (item.count > 1 ? item.count - 1 : 1)">-</button>
+                                </div>
+                                <button class="add-to-cart-glow" (click)="addToCart(item.id, item.count)">
+                                    <i class="pi pi-shopping-cart"></i>
+                                    <span>הוסף לסל</span>
+                                </button>
+                                <div class="price-tag-main"><span class="price-val">₪{{ item.price * (item.count || 1) }}</span></div>
+                            } @else {
+                                <div class="winner-announcement">
+                                    <i class="pi pi-trophy trophy-icon"></i>
+                                    <span class="winner-label">הזוכה המאושר/ת:</span>
+                                    <div class="winner-name">{{ item.winnerName }}</div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="card-content flex-1 text-right px-4">
+                            <span class="category-badge">{{ item.categoryName }}</span>
+                            <h3 class="gift-name">{{ item.name }}</h3>
+                            <p class="gift-desc">{{ item.description }}</p>
+                        </div>
+
+                        <div class="card-image-wrapper">
+                            @if (item.winnerName) { <div class="sold-overlay">המתנה הוגרלה</div> }
+                            <img [src]="getImageUrl(item.picture)" class="gift-img-premium" />
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        </ng-template>
+
+        <ng-template #grid let-items>
+            <div class="grid grid-nogutter bg-transparent">
+                @for (item of items; track item.id) {
+                <div class="col-12 sm:col-6 md:col-4 p-3">
+                    <div class="premium-gift-card grid-mode flex flex-column p-4 h-full" [class.sold-out]="item.winnerName">
+                        
+                        <div class="card-image-wrapper w-full mb-3">
+                            @if (item.winnerName) { <div class="sold-overlay">המתנה הוגרלה</div> }
+                            <img [src]="getImageUrl(item.picture)" class="gift-img-premium" />
+                        </div>
+
+                        <div class="card-content flex-1 text-right">
+                            <span class="category-badge">{{ item.categoryName }}</span>
+                            <h3 class="gift-name">{{ item.name }}</h3>
+                        </div>
+
+                        @if (!item.winnerName) {
+                            <div class="flex justify-content-center my-3">
+                                <div class="qty-selector flex align-items-center">
+                                    <button class="qty-btn" (click)="item.count = (item.count || 1) + 1">+</button>
+                                    <span class="qty-value">{{ item.count || 1 }}</span>
+                                    <button class="qty-btn" (click)="item.count = (item.count > 1 ? item.count - 1 : 1)">-</button>
+                                </div>
+                            </div>
+                            <div class="flex justify-content-between align-items-center mt-auto border-top-glass pt-3">
+                                <div class="price-tag-sm">₪{{ item.price * (item.count || 1) }}</div>
+                                <button class="add-to-cart-glow-sm" (click)="addToCart(item.id, item.count || 1)">
+                                    <i class="pi pi-shopping-cart"></i>
+                                </button>
+                            </div>
+                        } @else {
+                            <div class="winner-announcement-grid mt-auto pt-3 border-top-glass">
+                                <div class="winner-label">הזוכה המאושר/ת:</div>
+                                <div class="winner-name-grid">{{ item.winnerName }}</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                }
+            </div>
+        </ng-template>
+    </p-dataview>
+</div>

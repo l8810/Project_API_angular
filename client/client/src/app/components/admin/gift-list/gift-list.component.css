@@ -1,0 +1,247 @@
+/* עיצוב ה-Toolbar */
+:host ::ng-deep .cyber-toolbar {
+    background: #161b22 !important;
+    border: 1px solid #30363d !important;
+    padding: 1rem !important;
+    border-radius: 12px !important;
+}
+
+/* כרטיס המעטפת הראשי */
+.cyber-card {
+    background: #161b22;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* עיצוב תמונות ממוזערות בטבלה */
+.gift-thumb {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.gift-thumb:hover {
+    border-color: #00b894;
+    transform: scale(1.1);
+}
+
+/* עיצוב ה-Tag של התורם */
+:host ::ng-deep .cyber-tag {
+    background: #21262d !important;
+    color: #c9d1d9 !important;
+    border: 1px solid #30363d !important;
+}
+
+/* כותרות בדיאלוג */
+.cyber-label {
+    color: #8b949e;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* אזור העלאת תמונה */
+.upload-zone {
+    cursor: pointer;
+    background: #0d1117;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.upload-zone:hover {
+    background: #1c2128;
+}
+
+.preview-img {
+    max-width: 100%;
+    max-height: 150px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* צבעי כפתורי פעולות */
+:host ::ng-deep .edit-btn .p-button-icon { color: #00b894 !important; }
+:host ::ng-deep .delete-btn .p-button-icon { color: #ff4d4d !important; }
+
+/* טקסט עמום */
+.text-400 { color: #8b949e !important; }
+/* צביעת הרקע הלבן של ה-Paginator (סרגל הדפים בתחתית) */
+:host ::ng-deep .p-paginator {
+    background: #0d1117 !important; /* צבע שחור-כחול עמוק */
+    border: 1px solid #30363d !important;
+    border-top: none !important;
+    color: #8b949e !important;
+}
+
+/* הפיכת הכותרת (Caption) לכהה */
+:host ::ng-deep .p-datatable-header, 
+:host ::ng-deep .p-datatable-caption {
+    background: #161b22 !important;
+    border-color: #30363d !important;
+    color: white !important;
+}
+
+/* צביעת ה-Toolbar (איפה שנמצא כפתור "מתנה חדשה") */
+:host ::ng-deep .p-toolbar {
+    background: #161b22 !important;
+    border: 1px solid #30363d !important;
+}
+
+/* התאמת שדה החיפוש בתוך ה-Toolbar */
+:host ::ng-deep .p-inputtext {
+    background-color: #0d1117 !important;
+    color: white !important;
+    border: 1px solid #30363d !important;
+}
+
+/* ביטול הרקע הלבן של ה-Card שעוטף את הכל */
+.card {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* צביעת שורות הטבלה עצמן למניעת הבהוב לבן */
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr {
+    background: #0d1117 !important;
+    color: #e6edf3 !important;
+}
+
+/* שינוי צבע הטקסט של כותרות העמודות */
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+    background: #161b22 !important;
+    color: #8b949e !important;
+    border-color: #30363d !important;
+}
+/* צביעת הרקע הכללי של כל הדף - זה יבטל את הלובן מסביב */
+:host {
+    display: block;
+    background-color: #0d1117;
+    min-height: 100vh;
+}
+
+.dashboard-wrapper {
+    background-color: #0d1117 !important;
+    min-height: 100vh;
+}
+
+/* --- תיקון הדיאלוג (החלון הקופץ) --- */
+:host ::ng-deep .cyber-dialog .p-dialog-header,
+:host ::ng-deep .cyber-dialog .p-dialog-content,
+:host ::ng-deep .cyber-dialog .p-dialog-footer {
+    background-color: #161b22 !important; /* רקע כהה */
+    color: #e6edf3 !important;
+    border: 1px solid #30363d !important;
+}
+
+:host ::ng-deep .cyber-dialog .p-dialog-header {
+    border-bottom: 1px solid #30363d !important;
+}
+
+:host ::ng-deep .cyber-dialog .p-dialog-footer {
+    border-top: 1px solid #30363d !important;
+}
+
+/* שדות קלט בתוך הדיאלוג - מוודא שהם לא לבנים */
+:host ::ng-deep .cyber-input, 
+:host ::ng-deep .p-inputtext,
+:host ::ng-deep .p-select {
+    background-color: #0d1117 !important;
+    color: white !important;
+    border: 1px solid #30363d !important;
+}
+
+/* תיקון צבע הטקסט ב-Dropdown (Select) */
+:host ::ng-deep .p-select-label {
+    color: white !important;
+}
+
+/* עיצוב שורות הטבלה במעבר עכבר (Hover) */
+:host ::ng-deep .p-datatable-cyber .p-datatable-tbody > tr:hover {
+    background: #1c2128 !important;
+}
+/* צביעת הרקע של כל חלון הדיאלוג */
+:host ::ng-deep .cyber-dialog .p-dialog-header,
+:host ::ng-deep .cyber-dialog .p-dialog-content,
+:host ::ng-deep .cyber-dialog .p-dialog-footer {
+    background-color: #161b22 !important; /* צבע כהה עמוק */
+    color: #e6edf3 !important;
+    border: none !important;
+}
+
+/* צביעת כותרת הדיאלוג */
+:host ::ng-deep .cyber-dialog .p-dialog-title {
+    color: #ffffff !important;
+}
+
+/* דריסת צבע הרקע של כל שדות הקלט שסימנת כ-cyber-input */
+:host ::ng-deep .cyber-input, 
+:host ::ng-deep .cyber-input .p-inputtext,
+:host ::ng-deep .cyber-input.p-inputtext,
+:host ::ng-deep .cyber-input .p-select-label,
+:host ::ng-deep .cyber-input.p-select {
+    background-color: #0d1117 !important;
+    color: white !important;
+    border: 1px solid #30363d !important;
+}
+
+/* צביעת הטקסט של ה-Labels (שם מתנה, תיאור וכו') */
+.cyber-label {
+    color: #8b949e !important;
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* תיקון צבע האייקון של ה-X לסגירה */
+:host ::ng-deep .cyber-dialog .p-dialog-header-icon {
+    color: #8b949e !important;
+}
+
+/* צביעת רשימת הבחירה (Dropdown Panel) שנפתחת מה-Select */
+:host ::ng-deep .p-select-panel {
+    background-color: #161b22 !important;
+    border: 1px solid #30363d !important;
+}
+
+:host ::ng-deep .p-select-panel .p-select-item {
+    color: #e6edf3 !important;
+}
+
+:host ::ng-deep .p-select-panel .p-select-item:hover {
+    background-color: #1c2128 !important;
+}
+/* איחוד הפונט לכל שדות הקלט כולל התיאור */
+:host ::ng-deep .cyber-input, 
+:host ::ng-deep .p-inputtextarea,
+:host ::ng-deep .p-inputtext {
+    font-family: inherit !important; /* גורם להם לרשת את הפונט הראשי של האתר */
+    font-size: 1rem !important;
+}
+
+/* טיפול ספציפי ב-textarea בתוך הדיאלוג */
+:host ::ng-deep .cyber-dialog textarea.p-inputtextarea {
+    font-family: inherit !important;
+}
+/* הגבלת רוחב עמודת התיאור בטבלה */
+.description-cell {
+    max-width: 200px; /* ניתן לשנות את המספר לפי הצורך */
+    white-space: nowrap; /* מונע מהטקסט לרדת שורה ומכריח אותו להישאר בשורה אחת צרה */
+    overflow: hidden; /* מסתיר את מה שחורג מהרוחב */
+    text-overflow: ellipsis; /* מוסיף "..." בסוף טקסט ארוך */
+    vertical-align: middle;
+}
+
+/* אופציונלי: הצגת התיאור המלא רק כשעומדים על התא עם העכבר */
+.description-cell:hover {
+    white-space: normal; /* מאפשר לטקסט להתפרס במידת הצורך במעבר עכבר */
+    overflow: visible;
+    position: relative;
+    background: #161b22; /* רקע כדי שהטקסט הצף יהיה קריא */
+    z-index: 10;
+}
+

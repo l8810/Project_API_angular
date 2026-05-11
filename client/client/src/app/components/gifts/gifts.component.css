@@ -1,0 +1,484 @@
+:host ::ng-deep .p-dataview,
+
+:host ::ng-deep .p-dataview-content {
+
+    background: transparent !important;
+
+    border: none !important;
+
+}
+
+
+
+/* רקע הדף עם השתקפות אלכסונית */
+
+.dashboard-wrapper {
+
+    background: #0d1117 !important;
+
+    background-image: linear-gradient(135deg, #161b22 0%, #0d1117 50%, #0d1117 100%) !important;
+
+    min-height: 100vh;
+
+    color: white;
+
+}
+
+
+
+/* Header הקטלוג */
+
+.catalog-header-main {
+
+    background: rgba(22, 27, 34, 0.6);
+
+    border: 1px solid rgba(0, 184, 148, 0.2);
+
+    border-radius: 15px;
+
+    position: relative;
+
+    overflow: hidden;
+
+}
+
+
+
+/* אפקט הברק ב-Header (כמו בתמונה) */
+
+.catalog-header-main::after {
+
+    content: '';
+
+    position: absolute;
+
+    top: 0; right: 0; width: 200px; height: 100%;
+
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.05), transparent);
+
+}
+
+
+
+.catalog-title { font-size: 2rem; color: white; font-weight: bold; }
+
+.catalog-label { color: #00b894; font-weight: bold; font-size: 0.9rem; }
+
+.items-count { color: #8b949e; }
+
+
+
+/* כרטיס המתנה הפרימיום */
+
+.premium-gift-card {
+
+    background: rgba(22, 27, 34, 0.8);
+
+    border: 1px solid rgba(0, 184, 148, 0.3);
+
+    border-radius: 12px;
+
+    position: relative;
+
+    transition: 0.3s;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+
+}
+
+
+
+/* קווי הניאון המדויקים מלמעלה ומלמטה */
+
+.premium-gift-card::before, .premium-gift-card::after {
+
+    content: '';
+
+    position: absolute;
+
+    left: 10%; right: 10%; height: 1px;
+
+    background: linear-gradient(90deg, transparent, #00b894, transparent);
+
+    box-shadow: 0 0 10px #00b894;
+
+}
+
+.premium-gift-card::before { top: 0; }
+
+.premium-gift-card::after { bottom: 0; }
+
+
+
+/* תמונה */
+
+.card-image-wrapper {
+
+    width: 280px; height: 160px;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    border: 1px solid #00b894;
+
+}
+
+.gift-img-premium { width: 100%; height: 100%; object-fit: cover; }
+
+
+
+/* מחיר */
+
+.price-tag-main { font-size: 2.5rem; font-weight: 800; color: white; }
+
+
+
+/* כפתור "הוסף לסל" עם הילה */
+
+.add-to-cart-glow {
+
+    background: #00b894;
+
+    color: #0d1117;
+
+    border: none;
+
+    padding: 10px 20px;
+
+    border-radius: 20px;
+
+    font-weight: bold;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    box-shadow: 0 0 15px rgba(0, 184, 148, 0.6);
+
+    cursor: pointer;
+
+}
+
+
+
+/* בורר כמות מעוצב */
+
+.qty-selector {
+
+    border: 1px solid #30363d;
+
+    border-radius: 8px;
+
+    background: #161b22;
+
+}
+
+.qty-btn {
+
+    background: transparent; border: none; color: #8b949e;
+
+    padding: 5px 15px; font-size: 1.2rem; cursor: pointer;
+
+}
+
+.qty-value { color: white; padding: 0 10px; font-family: monospace; }
+
+
+
+/* טקסטים */
+
+.gift-name { color: white; font-size: 1.4rem; margin: 5px 0; }
+
+.gift-desc { color: #8b949e; font-size: 0.9rem; }
+
+.category-badge { color: #00b894; font-size: 0.8rem; font-weight: bold; }
+
+
+
+/* SelectButton של PrimeNG בסגנון כהה */
+
+::ng-deep .cyber-select-button .p-button {
+
+    background: #161b22 !important;
+
+    border-color: #30363d !important;
+
+    color: #8b949e !important;
+
+}
+
+::ng-deep .cyber-select-button .p-button.p-highlight {
+
+    background: #00b894 !important;
+
+    color: #0d1117 !important;
+
+}
+
+/* ביטול שטחים לבנים של PrimeNG */
+
+:host ::ng-deep {
+
+    .p-dataview, .p-dataview-content, .p-dataview-header {
+
+        background: transparent !important;
+
+        border: none !important;
+
+    }
+
+   
+
+    /* תיקון סרגל הדפים הלבן שמופיע בתמונה */
+
+    .p-paginator {
+
+        background: rgba(22, 27, 34, 0.5) !important;
+
+        border: 1px solid rgba(0, 184, 148, 0.2) !important;
+
+        border-radius: 12px !important;
+
+        margin-top: 20px !important;
+
+        color: white !important;
+
+    }
+
+   
+
+    .p-paginator .p-paginator-pages .p-paginator-page,
+
+    .p-paginator .p-paginator-next, .p-paginator .p-paginator-last,
+
+    .p-paginator .p-paginator-prev, .p-paginator .p-paginator-first {
+
+        color: #8b949e !important;
+
+    }
+
+
+
+    .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+
+        background: rgba(0, 184, 148, 0.2) !important;
+
+        color: #00b894 !important;
+
+    }
+
+}
+
+
+
+/* כרטיס המתנה - הגדרות משותפות */
+
+.premium-gift-card {
+
+    background: rgba(22, 27, 34, 0.9) !important;
+
+    border: 1px solid rgba(0, 184, 148, 0.3) !important;
+
+    border-radius: 12px;
+
+    position: relative;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+
+}
+
+
+
+/* אפקט הניאון בכרטיס */
+
+.premium-gift-card::before {
+
+    content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+
+    background: linear-gradient(90deg, transparent, #00b894, transparent);
+
+    box-shadow: 0 0 10px #00b894;
+
+}
+
+
+
+/* מחיר ועיצוב גריד */
+
+.price-tag-sm { color: white; font-size: 1.5rem; font-weight: bold; }
+
+.border-top-glass { border-top: 1px solid rgba(255,255,255,0.1); }
+
+
+
+.add-to-cart-glow-sm {
+
+    background: #00b894; border: none; border-radius: 50%; width: 40px; height: 40px;
+
+    color: #0d1117; cursor: pointer; box-shadow: 0 0 10px rgba(0, 184, 148, 0.4);
+
+}
+
+/* שימוש בקידומת רחבה יותר כדי לוודא דריסה */
+
+:host ::ng-deep .custom-dv {
+
+    background-color: #0d1117 !important;
+
+}
+
+
+
+/* ביטול מוחלט של הרקע הלבן ב-Header וב-Content */
+
+:host ::ng-deep .p-dataview .p-dataview-header,
+
+:host ::ng-deep .p-dataview .p-dataview-content {
+
+    background: transparent !important;
+
+    background-color: transparent !important;
+
+    border: none !important;
+
+    color: white !important;
+
+}
+
+
+
+/* צביעת סרגל הדפים (החלק הלבן התחתון) */
+
+:host ::ng-deep .p-paginator {
+
+    background-color: #161b22 !important; /* צבע כהה */
+
+    background: #161b22 !important;
+
+    border-top: 1px solid rgba(0, 184, 148, 0.2) !important;
+
+    color: #8b949e !important;
+
+}
+
+
+
+/* שינוי צבע כפתורי בחירת התצוגה (למעלה משמאל) */
+
+:host ::ng-deep .p-selectbutton {
+
+    background: #161b22 !important;
+
+    border-radius: 8px !important;
+
+    overflow: hidden !important;
+
+}
+
+
+
+:host ::ng-deep .p-selectbutton .p-button {
+
+    background: #161b22 !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+
+    color: white !important;
+
+}
+
+
+
+/* כפתור נבחר - צבע ירוק ניאון */
+
+:host ::ng-deep .p-selectbutton .p-button.p-highlight {
+
+    background: #00b894 !important;
+
+    color: #0d1117 !important;
+
+}
+
+
+
+/* תיקון צבע הטקסט של "סה"כ פריטים" */
+
+.items-count {
+
+    color: #8b949e !important;
+
+}
+/* עיצוב הזוכה - מצב רשימה */
+.winner-announcement {
+    text-align: center;
+    padding: 15px;
+    background: rgba(0, 184, 148, 0.1);
+    border: 1px solid #00b894;
+    border-radius: 12px;
+    width: 100%;
+}
+
+.trophy-icon {
+    font-size: 2rem;
+    color: #ffd700; /* זהב */
+    margin-bottom: 8px;
+    display: block;
+}
+
+.winner-label {
+    color: #8b949e;
+    font-size: 0.8rem;
+    display: block;
+}
+
+.winner-name {
+    color: #00b894;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(0, 184, 148, 0.5);
+}
+
+/* עיצוב הזוכה - מצב גריד */
+.winner-announcement-grid {
+    text-align: center;
+    background: rgba(255, 215, 0, 0.05);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.winner-name-grid {
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* אפקט כרטיס סגור */
+.sold-out {
+    opacity: 0.85;
+    filter: grayscale(0.3);
+    border-color: #30363d !important;
+}
+
+.sold-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    background: rgba(255, 77, 77, 0.9);
+    color: white;
+    padding: 5px 20px;
+    font-weight: bold;
+    border-radius: 4px;
+    z-index: 2;
+    pointer-events: none;
+    white-space: nowrap;
+    border: 2px solid white;
+}
+
+/* וודא שהתמונה ב-sold out מוחשכת מעט */
+.sold-out .gift-img-premium {
+    filter: brightness(0.4);
+}

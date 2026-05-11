@@ -1,0 +1,230 @@
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background-color: #1a1d23; /* צבע רקע כהה עמוק */
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+    right: 0; /* הצמדה לימין עבור עברית */
+  }
+  
+  .logo-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #2d323e;
+  }
+  
+  .menu-label {
+    color: #636e72;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    margin: 25px 0 10px 0;
+  }
+  
+  .nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    color: #b2bec3;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin-bottom: 5px;
+  }
+  
+  .nav-item:hover, .nav-item.active {
+    background-color: #2d323e;
+    color: #00b894; /* צבע ירוק מגניב */
+  }
+  
+  .nav-item i {
+    margin-left: 12px; /* רווח לאייקון בצד ימין */
+  }
+  
+  .user-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #2d323e;
+  }
+  
+  .user-name {
+    display: block;
+    font-weight: bold;
+  }
+  
+  .user-email {
+    font-size: 0.8rem;
+    color: #636e72;
+  }
+  
+  .logout-btn {
+    background: none;
+    border: 1px solid #ff7675;
+    color: #ff7675;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    transition: 0.3s;
+  }
+  
+  .logout-btn:hover {
+    background: #ff7675;
+    color: white;
+  }
+  .sidebar {
+    width: 260px;
+    height: 100vh;
+    background-color: #1a1d23;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box; /* מבטל את הגלילה הפנימית של התפריט */
+    flex-shrink: 0;
+    position: relative; /* אין צורך ב-sticky או fixed כי האבא (main-layout) הוא flex */
+  }
+  .sidebar {
+    width: 260px;
+    height: 100vh; /* תופס את כל גובה המסך */
+    background-color: #1a1d23;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    position: fixed; /* מקבע אותו למסך */
+    right: 0;
+    top: 0;
+    z-index: 1000;
+}
+.brand-wrapper {
+  padding: 30px 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.luxury-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* הריבוע המעוצב בצד */
+.logo-box {
+  width: 35px;
+  height: 35px;
+  border: 2px solid #00b894; /* צבע הטורקיז מהעיצוב הקודם */
+  border-radius: 6px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(45deg); /* סיבוב שנותן מראה של יהלום/מתנה */
+}
+
+.box-inner {
+  width: 12px;
+  height: 12px;
+  background-color: #00b894;
+  border-radius: 2px;
+}
+
+/* טקסט הלוגו */
+.logo-name {
+  display: flex;
+  flex-direction: column;
+  letter-spacing: 2px;
+}
+
+.top-text {
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 900;
+  line-height: 0.9;
+}
+
+.bottom-text {
+  color: #636e72; /* אפור בהיר */
+  font-size: 0.7rem;
+  font-weight: 400;
+  margin-top: 4px;
+  border-top: 1px solid #2d323e;
+  padding-top: 2px;
+}
+
+/* קו הפרדה יוקרתי */
+.divider-line {
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #2d323e, transparent);
+  margin: 0 auto 20px auto;
+}
+/* פריט בתפריט - צפוף יותר */
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px; /* פדינג קטן יותר לצפיפות */
+  color: #b2bec3;
+  text-decoration: none;
+  border-radius: 8px;
+  margin-bottom: 4px; /* רווח קטן בין השורות */
+  font-size: 0.95rem;
+  transition: 0.3s;
+}
+
+/* יישור האייקון - חשוב מאוד! */
+.nav-item i {
+  width: 20px; /* רוחב קבוע כדי שהטקסט יתחיל תמיד באותו קו */
+  margin-left: 10px; /* רווח מהטקסט (בשפה מימין לשמאל) */
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.menu-label {
+  color: #636e72;
+  font-size: 0.75rem;
+  margin: 15px 0 5px 0;
+}
+
+.logout-btn i {
+  margin-left: 8px;
+}
+/* מעטפת האייקון מאפשרת מיקום אבסולוטי ל-Badge */
+.icon-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px; /* רווח מהטקסט בעברית */
+}
+
+/* עיצוב ה-Badge כעיגול קטן */
+.badge {
+  position: absolute;
+  top: -5px;      /* מרחק מלמעלה */
+  right: -8px;    /* מרחק מימין - מעל האייקון */
+  background-color: #00b894; /* צבע הטורקיז של הלוגו שלך */
+  color: white;
+  font-size: 0.65rem;
+  font-weight: bold;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 50%; /* הופך לעיגול */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  border: 1.5px solid #1a1d23; /* מסגרת בצבע הרקע כדי שיבלוט */
+}
+
+/* התאמת ה-nav-item למבנה החדש */
+.cart-item {
+  display: flex;
+  align-items: center;
+}

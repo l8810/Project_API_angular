@@ -1,0 +1,126 @@
+<div class="dashboard-wrapper p-4" dir="rtl">
+    <p-toast />
+
+    <div class="flex align-items-center gap-3 mb-4 mt-2">
+        <i class="pi pi-gift text-primary text-3xl title-glow"></i>
+        <h1 class="text-3xl font-bold m-0 text-white">ניהול קטלוג מתנות</h1>
+    </div>
+
+    <div class="cyber-card p-4">
+        <p-toolbar styleClass="cyber-toolbar mb-4">
+            <ng-template pTemplate="start">
+                <p-button label="מתנה חדשה" icon="pi pi-plus" (onClick)="openNew()" class="add-to-cart-glow" />
+            </ng-template>
+            <ng-template pTemplate="end">
+                <p-button label="ייצא לאקסל" icon="pi pi-upload" [outlined]="true" severity="secondary"
+                    (onClick)="exportCSV($event)" class="cyber-secondary-btn" />
+            </ng-template>
+        </p-toolbar>
+
+        <p-table #dt [value]="gifts()" [rows]="10" [paginator]="true"
+            [globalFilterFields]="['name', 'description', 'donorName', 'price','categoryName']"
+            [tableStyle]="{ 'min-width': '75rem' }" [rowHover]="true" dataKey="Id" styleClass="p-datatable-cyber"
+            currentPageReportTemplate="מציג {first} עד {last} מתוך {totalRecords} רשומות"
+            [showCurrentPageReport]="true">
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-between">
+                    <div class="flex flex-column gap-1">
+                        <h5 class="m-0 text-xl font-bold text-white">רשימת מתנות פעילה</h5>
+                        <span class="text-sm text-400">סה"כ {{ gifts().length }} מתנות במערכת</span>
+                    </div>
+                    <p-iconfield>
+                        <p-inputicon class="pi pi-search" />
+                        <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                            placeholder="חיפוש מהיר..." class="cyber-input" />
+                    </p-iconfield>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="name">שם <p-sortIcon field="name" /></th>
+                    <th pSortableColumn="description" style="width: 20%">תיאור <p-sortIcon field="description" /></th>
+                    <th pSortableColumn="donorName">תורם <p-sortIcon field="donorName" /></th>
+                    <th pSortableColumn="price">מחיר <p-sortIcon field="price" /></th>
+                    <th pSortableColumn="categoryName">קטגוריה <p-sortIcon field="categoryName" /></th>
+                    <th>תמונה</th>
+                    <th style="width: 8rem">פעולות</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-gift>
+                <tr>
+                    <td class="font-bold">{{ gift.name }}</td>
+                    <td class="text-400 description-cell">{{ gift.description }}</td>
+                    <td><p-tag [value]="gift.donorName" severity="secondary" styleClass="cyber-tag"></p-tag></td>
+                    <td><span class="price-text">{{ gift.price }} ₪</span></td>
+                    <td><span class="text-primary">{{ gift.categoryName }}</span></td>
+                    <td>
+                        <img *ngIf="gift.picture" [src]="getImageUrl(gift.picture)" class="gift-thumb"
+                            (click)="viewImage(gift.picture)" />
+                    </td>
+                    <td>
+                        <div class="flex gap-2">
+                            <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" (onClick)="editGift(gift)"
+                                class="edit-btn" />
+                            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [text]="true"
+                                (onClick)="deleteGift(gift)" class="delete-btn" />
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <p-dialog [(visible)]="giftDialog" [style]="{ width: '480px' }" header="פרטי מתנה בקטלוג" [modal]="true"
+        styleClass="cyber-dialog" [draggable]="false">
+        <ng-template pTemplate="content">
+            <div class="p-fluid mt-3" dir="rtl">
+                <div class="field mb-4">
+                    <label class="cyber-label">שם מתנה</label>
+                    <input type="text" pInputText [(ngModel)]="gift.name" class="cyber-input" />
+                </div>
+
+                <div class="field mb-4">
+                    <label class="cyber-label">תיאור</label>
+                    <textarea pInputTextarea [(ngModel)]="gift.description" rows="2" class="cyber-input"></textarea>
+                </div>
+
+                <div class="col-6 field mb-4">
+                    <label class="cyber-label">תורם</label>
+                    <p-select [options]="donors()" [(ngModel)]="gift.donorId" optionLabel="name" optionValue="id"
+                        placeholder="בחר תורם" styleClass="cyber-input w-full"></p-select>
+                </div>
+                <div class="col-6 field mb-4">
+                    <label class="cyber-label">מחיר</label>
+                    <input type="number" pInputText [(ngModel)]="gift.price" class="cyber-input" />
+                </div>
+                <div class="field mb-4">
+                    <label class="cyber-label">קטגוריה</label>
+                    <p-select [options]="categories()" [(ngModel)]="gift.categoryId" optionLabel="name" optionValue="id"
+                        placeholder="בחר קטגוריה" styleClass="cyber-input w-full"></p-select>
+                </div>
+
+                <div class="field">
+                    <label class="cyber-label">תמונת מוצר</label>
+                    <div class="upload-zone p-3 text-center" (click)="fileInput.click()">
+                        <img *ngIf="gift.picture" [src]="getImageUrl(gift.picture)" class="preview-img mb-2" />
+                        <div *ngIf="!gift.picture" class="p-4 border-dashed border-1 border-500 border-round">
+                            <i class="pi pi-cloud-upload text-2xl text-400"></i>
+                            <p class="m-0 text-sm text-400">לחץ להעלאת תמונה</p>
+                        </div>
+                        <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none" />
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+            <p-button label="ביטול" icon="pi pi-times" [text]="true" (onClick)="hideDialog()"
+                class="cyber-secondary-btn" />
+            <p-button label="שמור מתנה" icon="pi pi-check" (onClick)="saveGift()" class="add-to-cart-glow" />
+        </ng-template>
+    </p-dialog>
+
+    <p-confirmdialog styleClass="cyber-dialog" />
+</div>

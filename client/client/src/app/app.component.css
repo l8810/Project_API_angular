@@ -1,0 +1,22 @@
+.main-layout {
+    display: flex;
+    flex-direction: row-reverse;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.content-area {
+    flex-grow: 1;
+    /* הרווח כאן חייב להיות שווה לרוחב של התפריט כדי שהתוכן לא ייכנס מתחתיו */
+    margin-right: 260px; 
+    box-sizing: border-box;
+    /* ביטול הגלילה הפנימית */
+    overflow: visible; 
+}
+.content-area {
+    margin-right: 260px; /* זה חייב להיות בדיוק הרוחב של ה-Sidebar שלך */
+    display: block;
+    width: calc(100% - 260px); /* מבטיח שהתוכן לא יחרוג מהמסך */
+    box-sizing: border-box;
+}
+

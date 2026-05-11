@@ -1,0 +1,18 @@
+﻿using StoreApi.DTOs;
+
+namespace TrickyTrayAPI.DTOs
+{
+    public class LoginRequestDTO
+    {
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+
+    public class LoginResponseDTO
+    {
+        public string Token { get; set; } = string.Empty;
+        public string TokenType { get; set; } = "Bearer";
+        public int ExpiresIn { get; set; }
+        public UserResponseDTO User { get; set; } = null!;
+    }
+}
