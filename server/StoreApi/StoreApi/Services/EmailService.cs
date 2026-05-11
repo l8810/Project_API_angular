@@ -122,12 +122,96 @@ namespace StoreApi.Services
             Console.WriteLine("[EMAIL] Sent successfully!");
         }
 
-        /// <summary>
-        /// Gets the winner details needed for composing the email
-        /// </summary>
         public async Task<WinnerDetailsDto> GetWinnerDetailsAsync(int giftId)
         {
             return await _repository.GetWinnerDetailsAsync(giftId);
+        }
+
+        public async Task SendPasswordResetEmailAsync(string toEmail, string userName, string resetLink)
+        {
+            var senderEmail = _config["EmailSettings:SenderEmail"]!;
+            var appPassword = _config["EmailSettings:AppPassword"]!;
+
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("המכירה הסינית", senderEmail));
+            message.To.Add(new MailboxAddress(userName, toEmail));
+            message.Subject = "🔑 איפוס סיסמה - המכירה הסינית";
+
+            string htmlBody = $@"
+<!DOCTYPE html>
+<html dir=""rtl"" lang=""he"">
+<head>
+  <meta charset=""UTF-8"" />
+  <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"" />
+</head>
+<body style=""margin:0;padding:0;background:#0a0a1a;font-family:Arial,sans-serif;"">
+  <table width=""100%"" cellpadding=""0"" cellspacing=""0"" style=""background:#0a0a1a;padding:40px 0;"">
+    <tr>
+      <td align=""center"">
+        <table width=""600"" cellpadding=""0"" cellspacing=""0"" style=""background:#12122a;border-radius:16px;overflow:hidden;border:1px solid #6c63ff33;"">
+
+          <!-- Header -->
+          <tr>
+            <td style=""background:linear-gradient(135deg,#6c63ff,#a855f7);padding:36px 30px;text-align:center;"">
+              <div style=""font-size:48px;margin-bottom:10px;"">🔑</div>
+              <h1 style=""color:#fff;margin:0;font-size:28px;font-weight:bold;"">איפוס סיסמה</h1>
+              <p style=""color:#e0d7ff;margin:6px 0 0;font-size:15px;"">המכירה הסינית 2026</p>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style=""padding:40px 40px 30px;text-align:right;"">
+              <p style=""color:#c0b8f0;font-size:17px;margin:0 0 8px;"">שלום,</p>
+              <h2 style=""color:#fff;font-size:22px;margin:0 0 20px;"">{userName}</h2>
+
+              <p style=""color:#a09ac8;font-size:15px;line-height:1.7;margin:0 0 28px;"">
+                קיבלנו בקשה לאיפוס הסיסמה לחשבון שלך.<br/>
+                לחץ על הכפתור הבא לאיפוס הסיסמה:
+              </p>
+
+              <!-- Button -->
+              <table cellpadding=""0"" cellspacing=""0"" style=""margin:0 auto 32px;"">
+                <tr>
+                  <td align=""center"" style=""border-radius:10px;background:linear-gradient(135deg,#6c63ff,#a855f7);"">
+                    <a href=""{resetLink}"" target=""_blank""
+                       style=""display:inline-block;padding:16px 40px;color:#fff;text-decoration:none;font-size:17px;font-weight:bold;border-radius:10px;"">
+                      אפס סיסמה
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <p style=""color:#6b6490;font-size:13px;line-height:1.6;margin:0 0 8px;"">
+                הקישור תקף לשעה אחת בלבד.<br/>
+                אם לא ביקשת לאפס את הסיסמה, ניתן להתעלם ממייל זה.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style=""background:#0d0d20;padding:20px 40px;text-align:center;border-top:1px solid #6c63ff22;"">
+              <p style=""color:#6c63ff;font-size:18px;font-weight:bold;margin:0 0 4px;"">✨ המכירה הסינית 2026 ✨</p>
+              <p style=""color:#4a4570;font-size:12px;margin:0;"">מייל זה נשלח אוטומטית — אין להשיב אליו</p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>";
+
+            var bodyBuilder = new BodyBuilder { HtmlBody = htmlBody };
+            message.Body = bodyBuilder.ToMessageBody();
+
+            using var client = new SmtpClient();
+            await client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync(senderEmail, appPassword);
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace StoreApi.Repositories
         Task<IEnumerable<User>> GetAllAsync();
         Task<User?> GetByEmailAsync(string email);
         Task<User?> GetByIdAsync(int id);
+        Task<User?> GetByResetTokenAsync(string token);
         Task<User?> UpdateAsync(User user);
     }
 }

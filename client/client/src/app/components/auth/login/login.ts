@@ -9,18 +9,20 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { PasswordModule } from 'primeng/password';
-import { RouterLink, Router } from '@angular/router'; // הוספת Router
+import { DialogModule } from 'primeng/dialog';
+import { RouterLink, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    ReactiveFormsModule, 
-    CommonModule, 
-    InputTextModule, 
-    ButtonModule, 
-    CardModule, 
+    ReactiveFormsModule,
+    CommonModule,
+    InputTextModule,
+    ButtonModule,
+    CardModule,
     PasswordModule,
+    DialogModule,
     RouterLink
   ],
   templateUrl: './login.html',
@@ -29,34 +31,48 @@ import { RouterLink, Router } from '@angular/router'; // הוספת Router
 export class Login {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
-  private router = inject(Router); // הזרקת הנתב
+  private router = inject(Router);
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    // עדכון ל-8 תווים כפי שביקשת בעיצוב
-    password: ['', [Validators.required, Validators.minLength(8)]], 
+    password: ['', [Validators.required, Validators.minLength(8)]],
   });
 
   formSubmitted = false;
+  isLoading = false;
+  serverError = '';
+
+  // Forgot password dialog
+  showForgotDialog = false;
+  forgotEmail = '';
+  forgotLoading = false;
+  forgotSent = false;
+  forgotError = '';
 
   onSubmit() {
     this.formSubmitted = true;
-    
+    this.serverError = '';
+
     if (this.loginForm.valid) {
+      this.isLoading = true;
       const loginData: LoginUser = this.loginForm.value;
-      
+
       this.authService.login(loginData).subscribe({
-        next: (response: any) => {
-          // איפוס הטופס
+        next: () => {
+          this.isLoading = false;
           this.loginForm.reset();
           this.formSubmitted = false;
-          
-          // ניתוב לדף המתנות
-          this.router.navigate(['/home']); 
+          this.router.navigate(['/home']);
         },
         error: (error: any) => {
-          console.error('Login failed', error);
-          // כאן אפשר להוסיף הצגת הודעת שגיאה למשתמש (למשל עם Toast)
+          this.isLoading = false;
+          if (error.status === 401 || error.status === 400) {
+            this.serverError = 'האימייל או הסיסמה שגויים. אנא נסה שנית.';
+          } else if (error.status === 0) {
+            this.serverError = 'לא ניתן להתחבר לשרת. בדוק את החיבור שלך.';
+          } else {
+            this.serverError = 'אירעה שגיאה. אנא נסה שנית מאוחר יותר.';
+          }
         }
       });
     }
@@ -65,5 +81,46 @@ export class Login {
   isInvalid(controlName: string) {
     const control = this.loginForm.get(controlName);
     return control?.invalid && (control?.touched || this.formSubmitted);
+  }
+
+  getEmailError(): string {
+    const control = this.loginForm.get('email');
+    if (control?.errors?.['required']) return 'אימייל הוא שדה חובה';
+    if (control?.errors?.['email']) return 'כתובת האימייל אינה תקינה';
+    return '';
+  }
+
+  getPasswordError(): string {
+    const control = this.loginForm.get('password');
+    if (control?.errors?.['required']) return 'סיסמה היא שדה חובה';
+    if (control?.errors?.['minlength']) return 'הסיסמה חייבת להכיל לפחות 8 תווים';
+    return '';
+  }
+
+  openForgotDialog() {
+    const email = this.loginForm.get('email')?.value?.trim();
+    if (!email) {
+      this.serverError = 'הכנס קודם את כתובת המייל שלך בשדה למעלה';
+      return;
+    }
+    this.forgotEmail = email;
+    this.showForgotDialog = true;
+    this.forgotSent = false;
+    this.forgotError = '';
+  }
+
+  onForgotSubmit() {
+    this.forgotLoading = true;
+    this.forgotError = '';
+    this.authService.forgotPassword(this.forgotEmail).subscribe({
+      next: () => {
+        this.forgotLoading = false;
+        this.forgotSent = true;
+      },
+      error: () => {
+        this.forgotLoading = false;
+        this.forgotError = 'אירעה שגיאה. אנא נסה שנית מאוחר יותר.';
+      }
+    });
   }
 }

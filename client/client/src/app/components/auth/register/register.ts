@@ -30,7 +30,8 @@ export class Register {
     route = inject(Router);
 
     formSubmitted = false;
-    isLoading = false; // לניהול ה-Spinner
+    isLoading = false;
+    serverError = '';
 
     registerForm = this.fb.group({
         name: ['', [Validators.required, Validators.maxLength(50)]],
@@ -40,24 +41,33 @@ export class Register {
 
     onSubmit() {
         this.formSubmitted = true;
-        
+        this.serverError = '';
+
         if (this.registerForm.valid) {
-            this.isLoading = true; // הפעלת אנימציה
-            
-            const newUser : CreateUser = {
+            this.isLoading = true;
+
+            const newUser: CreateUser = {
                 name: this.registerForm.value.name ?? '',
                 email: this.registerForm.value.email ?? '',
                 password: this.registerForm.value.password ?? '',
-            }
+            };
 
             this.authService.register(newUser).subscribe({
-                next: (response: any) => {
+                next: () => {
                     this.isLoading = false;
                     this.route.navigate(['/login']);
                 },
                 error: (error: any) => {
                     this.isLoading = false;
-                    // alert('Registration failed');
+                    if (error.status === 409 || error.error?.message?.includes('already registered')) {
+                        this.serverError = 'כתובת האימייל כבר רשומה במערכת. נסה להתחבר במקום.';
+                    } else if (error.status === 400) {
+                        this.serverError = 'הנתונים שהוזנו אינם תקינים. אנא בדוק את הפרטים.';
+                    } else if (error.status === 0) {
+                        this.serverError = 'לא ניתן להתחבר לשרת. בדוק את החיבור שלך.';
+                    } else {
+                        this.serverError = 'אירעה שגיאה בהרשמה. אנא נסה שנית מאוחר יותר.';
+                    }
                 }
             });
         }
@@ -66,5 +76,27 @@ export class Register {
     isInvalid(controlName: string) {
         const control = this.registerForm.get(controlName);
         return control?.invalid && (control?.touched || this.formSubmitted);
+    }
+
+    getNameError(): string {
+        const control = this.registerForm.get('name');
+        if (control?.errors?.['required']) return 'שם מלא הוא שדה חובה';
+        if (control?.errors?.['maxlength']) return 'השם לא יכול להכיל יותר מ-50 תווים';
+        return '';
+    }
+
+    getEmailError(): string {
+        const control = this.registerForm.get('email');
+        if (control?.errors?.['required']) return 'אימייל הוא שדה חובה';
+        if (control?.errors?.['email']) return 'כתובת האימייל אינה תקינה';
+        if (control?.errors?.['maxlength']) return 'האימייל ארוך מדי';
+        return '';
+    }
+
+    getPasswordError(): string {
+        const control = this.registerForm.get('password');
+        if (control?.errors?.['required']) return 'סיסמה היא שדה חובה';
+        if (control?.errors?.['minlength']) return 'הסיסמה חייבת להכיל לפחות 6 תווים';
+        return '';
     }
 }

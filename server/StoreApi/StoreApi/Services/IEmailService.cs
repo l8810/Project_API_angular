@@ -15,11 +15,8 @@ namespace StoreApi.Services
         /// <returns>Task representing the asynchronous email sending operation</returns>
         Task SendWinnerNotificationAsync(int giftId);
 
-        /// <summary>
-        /// Gets the winner details needed for the email
-        /// </summary>
-        /// <param name="giftId">The ID of the gift</param>
-        /// <returns>Winner details including name, email, and gift name</returns>
         Task<WinnerDetailsDto> GetWinnerDetailsAsync(int giftId);
+
+        Task SendPasswordResetEmailAsync(string toEmail, string userName, string resetLink);
     }
 }

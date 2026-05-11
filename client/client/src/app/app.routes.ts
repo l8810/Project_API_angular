@@ -4,6 +4,7 @@ import { AdminLayoutComponent } from './components/admin/admin-layout/admin-layo
 import { GiftsComponent } from './components/gifts/gifts.component';
 import { Register } from './components/auth/register/register';
 import {Login} from './components/auth/login/login'
+import { ResetPasswordComponent } from './components/auth/reset-password/reset-password';
 import { GiftListComponent } from './components/admin/gift-list/gift-list.component';
 import { OrdersListComponent } from './components/admin/orders-list/orders-list.component';
 import { CartComponent } from './components/cart/cart.component';
@@ -16,6 +17,7 @@ export const routes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'login', component: Login },
     { path: 'register', component: Register  },
+    { path: 'reset-password', component: ResetPasswordComponent },
     { path:'gifts', component: GiftsComponent },
     { path:'cart', component: CartComponent },
     { path:'orders', component: MyOrdersComponent },

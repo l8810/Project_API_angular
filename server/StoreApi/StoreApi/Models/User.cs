@@ -27,7 +27,10 @@ namespace StoreApi.Models
 
         [Required(ErrorMessage = "The role is required.")]
         public Role Role { get; set; } = Role.User;
-        public List<Order> Orders { get; set; }= new List<Order>();
-       public List<ProductCart> Cart { get; set; }=new List<ProductCart>();
+        public List<Order> Orders { get; set; } = new List<Order>();
+        public List<ProductCart> Cart { get; set; } = new List<ProductCart>();
+
+        public string? ResetPasswordToken { get; set; }
+        public DateTime? ResetPasswordTokenExpiry { get; set; }
     }
 }

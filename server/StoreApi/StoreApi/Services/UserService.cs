@@ -10,17 +10,20 @@ public class UserService : IUserService
     private readonly ITokenService _tokenService;
     private readonly IConfiguration _configuration;
     private readonly ILogger<UserService> _logger;
+    private readonly IEmailService _emailService;
 
     public UserService(
         IUserRepository userRepository,
         ITokenService tokenService,
         IConfiguration configuration,
-        ILogger<UserService> logger)
+        ILogger<UserService> logger,
+        IEmailService emailService)
     {
         _userRepository = userRepository;
         _tokenService = tokenService;
         _configuration = configuration;
         _logger = logger;
+        _emailService = emailService;
     }
 
     public async Task<IEnumerable<UserResponseDTO>> GetAllUsersAsync()
@@ -112,6 +115,41 @@ public class UserService : IUserService
             ExpiresIn = expiryMinutes * 60,
             User = MapToResponseDto(user)
         };
+    }
+
+    public async Task ForgotPasswordAsync(string email)
+    {
+        var user = await _userRepository.GetByEmailAsync(email);
+        if (user == null) return; // Silent — don't reveal if email exists
+
+        var tokenBytes = new byte[32];
+        System.Security.Cryptography.RandomNumberGenerator.Fill(tokenBytes);
+        var resetToken = Convert.ToHexString(tokenBytes).ToLower();
+
+        user.ResetPasswordToken = resetToken;
+        user.ResetPasswordTokenExpiry = DateTime.UtcNow.AddHours(1);
+        await _userRepository.UpdateAsync(user);
+
+        var clientBaseUrl = _configuration["ClientBaseUrl"] ?? "http://localhost:4200";
+        var resetLink = $"{clientBaseUrl}/reset-password?token={resetToken}";
+
+        await _emailService.SendPasswordResetEmailAsync(email, user.Name, resetLink);
+        _logger.LogInformation("Password reset email sent to {Email}", email);
+    }
+
+    public async Task<bool> ResetPasswordAsync(string token, string newPassword)
+    {
+        var user = await _userRepository.GetByResetTokenAsync(token);
+        if (user == null) return false;
+        if (user.ResetPasswordTokenExpiry == null || user.ResetPasswordTokenExpiry < DateTime.UtcNow) return false;
+
+        user.Password = HashPassword(newPassword);
+        user.ResetPasswordToken = null;
+        user.ResetPasswordTokenExpiry = null;
+        await _userRepository.UpdateAsync(user);
+
+        _logger.LogInformation("Password reset successfully for user {UserId}", user.Id);
+        return true;
     }
 
     private static UserResponseDTO MapToResponseDto(User user)

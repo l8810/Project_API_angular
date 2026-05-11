@@ -14,42 +14,80 @@
       <div class="input-field-group">
         <label class="cyber-label">אימייל</label>
         <div class="input-with-icon">
-          <input 
-            type="text" 
-            pInputText 
-            formControlName="email" 
-          />
+          <input type="text" pInputText formControlName="email" [class.input-error]="isInvalid('email')" />
           <i class="pi pi-envelope"></i>
         </div>
+        <small class="error-msg" *ngIf="isInvalid('email')">
+          <i class="pi pi-exclamation-circle"></i> {{ getEmailError() }}
+        </small>
       </div>
 
       <div class="input-field-group">
         <label class="cyber-label">סיסמה</label>
         <div class="input-with-icon">
-          <p-password 
-            formControlName="password" 
-            [toggleMask]="true" 
-            [feedback]="false" 
-            styleClass="w-full"
-            [minlength]="8"
-            inputStyleClass="cyber-input-inner">
+          <p-password formControlName="password" [toggleMask]="true" [feedback]="false"
+            styleClass="w-full" [minlength]="8" inputStyleClass="cyber-input-inner"
+            [class.input-error]="isInvalid('password')">
           </p-password>
           <i class="pi pi-lock"></i>
         </div>
+        <small class="error-msg" *ngIf="isInvalid('password')">
+          <i class="pi pi-exclamation-circle"></i> {{ getPasswordError() }}
+        </small>
       </div>
 
-      <button 
-        pButton 
-        type="submit" 
-        label="התחברות" 
-        class="add-to-cart-glow mt-2" 
-        [disabled]="loginForm.invalid">
+      <div class="server-error" *ngIf="serverError">
+        <i class="pi pi-times-circle"></i> {{ serverError }}
+      </div>
+
+      <button pButton type="submit" class="add-to-cart-glow mt-2" [disabled]="loginForm.invalid || isLoading">
+        <i class="pi pi-spin pi-spinner ml-2" *ngIf="isLoading"></i>
+        <span>התחברות</span>
       </button>
 
+      <div class="text-center mt-1">
+        <span class="forgot-link text-sm" (click)="openForgotDialog()">שכחת סיסמה?</span>
+      </div>
+
       <div class="register-hint text-center mt-3 text-sm">
-        <span class="text-400">עוד לא רשום?</span> 
+        <span class="text-400">עוד לא רשום?</span>
         <a routerLink="/register" class="text-primary no-underline mr-1">צור חשבון חדש</a>
       </div>
     </form>
   </div>
 </div>
+
+<!-- Forgot Password Dialog -->
+<p-dialog [(visible)]="showForgotDialog" [modal]="true" [draggable]="false" [resizable]="false"
+          header="שכחת סיסמה?" [style]="{width: '370px'}" styleClass="forgot-dialog" dir="rtl">
+
+  <ng-container *ngIf="!forgotSent">
+    <p class="forgot-desc">נשלח קישור לאיפוס סיסמה לכתובת:</p>
+    <div class="forgot-email-display">
+      <i class="pi pi-envelope"></i>
+      <span>{{ forgotEmail }}</span>
+    </div>
+    <div class="server-error mt-2" *ngIf="forgotError">
+      <i class="pi pi-times-circle"></i> {{ forgotError }}
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="forgotSent">
+    <div class="forgot-success">
+      <i class="pi pi-check-circle"></i>
+      <p>אם הכתובת קיימת במערכת, תקבל מייל עם קישור לאיפוס הסיסמה בקרוב.</p>
+    </div>
+  </ng-container>
+
+  <ng-template pTemplate="footer">
+    <button *ngIf="!forgotSent" pButton type="button" class="add-to-cart-glow w-full"
+            [disabled]="forgotLoading" (click)="onForgotSubmit()">
+      <i class="pi pi-spin pi-spinner ml-2" *ngIf="forgotLoading"></i>
+      <span>שלח קישור לאיפוס</span>
+    </button>
+    <button *ngIf="forgotSent" pButton type="button" class="w-full" style="background:#21262d;border:none;"
+            (click)="showForgotDialog = false">
+      סגור
+    </button>
+  </ng-template>
+</p-dialog>

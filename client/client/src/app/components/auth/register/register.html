@@ -16,50 +16,44 @@
       <div class="input-field-group">
         <label class="cyber-label">שם מלא</label>
         <div class="input-with-icon">
-          <input 
-            type="text" 
-            pInputText 
-            formControlName="name" 
-          />
+          <input type="text" pInputText formControlName="name" [class.input-error]="isInvalid('name')" />
           <i class="pi pi-user"></i>
         </div>
-        <small class="p-error block mt-1" *ngIf="isInvalid('name')">שם הוא שדה חובה</small>
+        <small class="error-msg" *ngIf="isInvalid('name')">
+          <i class="pi pi-exclamation-circle"></i> {{ getNameError() }}
+        </small>
       </div>
 
       <div class="input-field-group">
         <label class="cyber-label">אימייל</label>
         <div class="input-with-icon">
-          <input 
-            type="email" 
-            pInputText 
-            formControlName="email" 
-          />
+          <input type="email" pInputText formControlName="email" [class.input-error]="isInvalid('email')" />
           <i class="pi pi-envelope"></i>
         </div>
-        <small class="p-error block mt-1" *ngIf="isInvalid('email')">אימייל לא תקין</small>
+        <small class="error-msg" *ngIf="isInvalid('email')">
+          <i class="pi pi-exclamation-circle"></i> {{ getEmailError() }}
+        </small>
       </div>
 
       <div class="input-field-group">
-        <label class="cyber-label">סיסמה (מינימום 8 תווים)</label>
+        <label class="cyber-label">סיסמה</label>
         <div class="input-with-icon">
-          <p-password 
-            formControlName="password" 
-            [toggleMask]="true" 
-            [feedback]="false" 
-            styleClass="w-full"
-            [minlength]="8"
-            inputStyleClass="cyber-input-inner">
+          <p-password formControlName="password" [toggleMask]="true" [feedback]="false"
+            styleClass="w-full" [minlength]="6" inputStyleClass="cyber-input-inner"
+            [class.input-error]="isInvalid('password')">
           </p-password>
           <i class="pi pi-lock"></i>
         </div>
-        <small class="p-error block mt-1" *ngIf="isInvalid('password')">הסיסמה חייבת להכיל לפחות 8 תווים</small>
+        <small class="error-msg" *ngIf="isInvalid('password')">
+          <i class="pi pi-exclamation-circle"></i> {{ getPasswordError() }}
+        </small>
       </div>
 
-      <button 
-        pButton 
-        pRipple
-        type="submit" 
-        class="add-to-cart-glow mt-2" 
+      <div class="server-error" *ngIf="serverError">
+        <i class="pi pi-times-circle"></i> {{ serverError }}
+      </div>
+
+      <button pButton pRipple type="submit" class="add-to-cart-glow mt-2"
         [disabled]="registerForm.invalid || isLoading">
         <i class="pi pi-spin pi-spinner ml-2" *ngIf="isLoading"></i>
         <span class="w-full text-center">הרשמה</span>

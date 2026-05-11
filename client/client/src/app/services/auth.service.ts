@@ -47,6 +47,14 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/register`, user);
   }
 
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/forgot-password`, { email });
+  }
+
+  resetPassword(token: string, newPassword: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reset-password`, { token, newPassword });
+  }
+
   private decodeToken(): any | null {
     if (isPlatformBrowser(this.platformId)) {
       const token = localStorage.getItem(this.tokenkey);

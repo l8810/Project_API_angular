@@ -182,3 +182,121 @@
 
 .text-primary { color: #00b894 !important; }
 .text-400 { color: #8b949e !important; }
+
+/* הודעות שגיאה */
+.error-msg {
+    color: #ff6b6b;
+    font-size: 0.78rem;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    animation: fadeIn 0.2s ease;
+}
+
+.server-error {
+    background: rgba(255, 77, 77, 0.1);
+    border: 1px solid rgba(255, 77, 77, 0.35);
+    border-radius: 8px;
+    color: #ff6b6b;
+    font-size: 0.85rem;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    direction: rtl;
+    animation: fadeIn 0.2s ease;
+}
+
+:host ::ng-deep .input-error input,
+:host ::ng-deep .input-error .p-password-input {
+    border-color: #ff6b6b !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* תיקון רקע לבן של autofill בדפדפן */
+:host ::ng-deep input:-webkit-autofill,
+:host ::ng-deep input:-webkit-autofill:hover,
+:host ::ng-deep input:-webkit-autofill:focus,
+:host ::ng-deep input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #0d1117 inset !important;
+    -webkit-text-fill-color: white !important;
+    caret-color: white !important;
+    transition: background-color 9999s ease-in-out 0s;
+}
+
+/* קישור שכחת סיסמה */
+.forgot-link {
+    color: #8b949e;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.forgot-link:hover { color: #00b894; }
+
+/* תיבת הדיאלוג */
+:host ::ng-deep .forgot-dialog .p-dialog {
+    background: #161b22 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 14px !important;
+}
+:host ::ng-deep .forgot-dialog .p-dialog-header {
+    background: #161b22 !important;
+    color: #fff !important;
+    border-bottom: 1px solid #21262d !important;
+    direction: rtl;
+}
+:host ::ng-deep .forgot-dialog .p-dialog-content {
+    background: #161b22 !important;
+    color: #a09ac8;
+    direction: rtl;
+}
+:host ::ng-deep .forgot-dialog .p-dialog-footer {
+    background: #161b22 !important;
+    border-top: 1px solid #21262d !important;
+    padding: 12px 20px !important;
+}
+
+.forgot-desc {
+    color: #8b949e;
+    font-size: 0.9rem;
+    margin: 0 0 12px;
+    line-height: 1.5;
+}
+
+.forgot-email-display {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-size: 0.95rem;
+    direction: ltr;
+    margin-bottom: 4px;
+}
+.forgot-email-display i { color: #6c63ff; }
+
+/* אייקון הצלחה */
+.forgot-success {
+    text-align: center;
+    padding: 12px 0 4px;
+}
+.forgot-success i {
+    font-size: 2.8rem;
+    color: #00b894;
+    display: block;
+    margin-bottom: 14px;
+}
+.forgot-success p {
+    color: #a09ac8;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}

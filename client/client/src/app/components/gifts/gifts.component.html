@@ -38,10 +38,10 @@
                                 </button>
                                 <div class="price-tag-main"><span class="price-val">₪{{ item.price * (item.count || 1) }}</span></div>
                             } @else {
-                                <div class="winner-announcement">
-                                    <i class="pi pi-trophy trophy-icon"></i>
-                                    <span class="winner-label">הזוכה המאושר/ת:</span>
-                                    <div class="winner-name">{{ item.winnerName }}</div>
+                                <div class="winner-chip">
+                                    <span class="winner-chip-label">זוכה</span>
+                                    <div class="winner-chip-avatar">{{ item.winnerName.charAt(0) }}</div>
+                                    <div class="winner-chip-name">{{ item.winnerName }}</div>
                                 </div>
                             }
                         </div>
@@ -53,7 +53,7 @@
                         </div>
 
                         <div class="card-image-wrapper">
-                            @if (item.winnerName) { <div class="sold-overlay">המתנה הוגרלה</div> }
+                            @if (item.winnerName) { <div class="won-badge"><i class="pi pi-check"></i> הוגרל</div> }
                             <img [src]="getImageUrl(item.picture)" class="gift-img-premium" />
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                     <div class="premium-gift-card grid-mode flex flex-column p-4 h-full" [class.sold-out]="item.winnerName">
                         
                         <div class="card-image-wrapper w-full mb-3">
-                            @if (item.winnerName) { <div class="sold-overlay">המתנה הוגרלה</div> }
+                            @if (item.winnerName) { <div class="won-badge"><i class="pi pi-check"></i> הוגרל</div> }
                             <img [src]="getImageUrl(item.picture)" class="gift-img-premium" />
                         </div>
 
@@ -93,9 +93,9 @@
                                 </button>
                             </div>
                         } @else {
-                            <div class="winner-announcement-grid mt-auto pt-3 border-top-glass">
-                                <div class="winner-label">הזוכה המאושר/ת:</div>
-                                <div class="winner-name-grid">{{ item.winnerName }}</div>
+                            <div class="winner-chip-grid mt-auto pt-3 border-top-glass">
+                                <div class="winner-chip-avatar-sm">{{ item.winnerName.charAt(0) }}</div>
+                                <div class="winner-chip-name-sm">{{ item.winnerName }}</div>
                             </div>
                         }
                     </div>

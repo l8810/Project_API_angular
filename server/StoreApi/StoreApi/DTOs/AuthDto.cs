@@ -15,4 +15,15 @@ namespace TrickyTrayAPI.DTOs
         public int ExpiresIn { get; set; }
         public UserResponseDTO User { get; set; } = null!;
     }
+
+    public class ForgotPasswordDTO
+    {
+        public string Email { get; set; } = string.Empty;
+    }
+
+    public class ResetPasswordDTO
+    {
+        public string Token { get; set; } = string.Empty;
+        public string NewPassword { get; set; } = string.Empty;
+    }
 }
