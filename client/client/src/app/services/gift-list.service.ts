@@ -59,4 +59,10 @@ export class GiftListService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 
+  // הגרלת זוכה
+  runLottery(giftId: number): Observable<{ id: number; name: string; email: string }> {
+    return this.http.post<{ id: number; name: string; email: string }>(
+      `${this.apiUrl}/${giftId}/lottery`, {}, { headers: this.getHeaders() }
+    );
+  }
 }

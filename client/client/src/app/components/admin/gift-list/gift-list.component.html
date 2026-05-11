@@ -60,11 +60,17 @@
                             (click)="viewImage(gift.picture)" />
                     </td>
                     <td>
-                        <div class="flex gap-2">
+                        <div class="flex gap-2 align-items-center">
                             <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" (onClick)="editGift(gift)"
                                 class="edit-btn" />
                             <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [text]="true"
                                 (onClick)="deleteGift(gift)" class="delete-btn" />
+                            <p-button *ngIf="!gift.winnerName" icon="pi pi-trophy" severity="warn" [rounded]="true" [text]="true"
+                                pTooltip="הגרל זוכה" tooltipPosition="top"
+                                (onClick)="runLottery(gift)" />
+                            <span *ngIf="gift.winnerName" class="text-xs text-green-400" pTooltip="זוכה: {{gift.winnerName}}" tooltipPosition="top">
+                                🏆
+                            </span>
                         </div>
                     </td>
                 </tr>
@@ -123,4 +129,28 @@
     </p-dialog>
 
     <p-confirmdialog styleClass="cyber-dialog" />
+
+    <!-- Winner Dialog -->
+    <p-dialog [(visible)]="winnerDialog" [style]="{ width: '420px' }" [modal]="true"
+        styleClass="cyber-dialog" [draggable]="false" [closable]="true" header="🏆 תוצאות ההגרלה">
+        <ng-template pTemplate="content">
+            <div class="text-center py-4" dir="rtl" *ngIf="winner">
+                <div style="font-size: 3rem; margin-bottom: 12px;">🎉</div>
+                <h3 class="text-white text-xl font-bold mb-1">הזוכה הוא/היא:</h3>
+                <p class="text-primary text-2xl font-bold mb-1">{{ winner.name }}</p>
+                <p class="text-400 text-sm mb-4">{{ winner.email }}</p>
+                <div class="p-3 border-round" style="background: #1e1b4b; border: 1px solid #6c63ff44;">
+                    <p class="text-300 text-sm m-0">המתנה: <strong class="text-white">{{ lotteryGiftName }}</strong></p>
+                </div>
+                <div class="mt-4 p-3 border-round flex align-items-center gap-2 justify-content-center"
+                    style="background: #0d2b1a; border: 1px solid #22c55e44;">
+                    <i class="pi pi-envelope text-green-400"></i>
+                    <span class="text-green-400 text-sm">מייל ברכות נשלח לזוכה בהצלחה!</span>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <p-button label="סגור" icon="pi pi-check" (onClick)="winnerDialog = false" class="add-to-cart-glow" />
+        </ng-template>
+    </p-dialog>
 </div>

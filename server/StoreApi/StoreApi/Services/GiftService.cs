@@ -105,18 +105,7 @@ namespace StoreApi.Services
             if (win == null)
                 return null;
 
-            // STEP 2: Send congratulation email to winner (Service Layer - Email Service)
-            // This automatically sends the email with winner name and gift details
-            try
-            {
-                await _emailService.SendWinnerNotificationAsync(id);
-            }
-            catch (Exception ex)
-            {
-                // Email sending failure doesn't prevent lottery success
-                // Log this error but continue
-                Console.WriteLine($"Warning: Email notification failed for winner: {ex.Message}");
-            }
+            await _emailService.SendWinnerNotificationAsync(id);
 
             // STEP 3: Return winner details to caller
             return new UserWinerDTO { Id = win.Id, Name = win.Name, Email = win.Email };

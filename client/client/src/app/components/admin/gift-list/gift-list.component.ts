@@ -21,6 +21,7 @@ import { DonorListService } from '../../../services/donor-list.service';
 import { CategoryListService } from '../../../services/category-list.service';
 import { environment } from '../../../enviorments/enviorment';
 import { TagModule } from 'primeng/tag';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-gift-list',
@@ -37,7 +38,8 @@ import { TagModule } from 'primeng/tag';
     InputTextModule,
     SelectModule,
     FormsModule,
-    TagModule
+    TagModule,
+    TooltipModule
   ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './gift-list.component.html',
@@ -72,6 +74,10 @@ export class GiftListComponent implements OnInit {
   submitted: boolean = false;
   selectedFile: File | null = null;
   isUploading: boolean = false;
+
+  winnerDialog: boolean = false;
+  winner: { name: string; email: string } | null = null;
+  lotteryGiftName: string = '';
 
   ngOnInit(): void {
     this.loadGifts();
@@ -376,5 +382,30 @@ export class GiftListComponent implements OnInit {
     if (fileName) {
       window.open(this.getImageUrl(fileName), '_blank');
     }
+  }
+
+  runLottery(gift: Gift): void {
+    this.confirmationService.confirm({
+      message: `האם להגריל זוכה עבור "${gift.name}"?`,
+      header: 'הגרלה',
+      icon: 'pi pi-trophy',
+      acceptButtonProps: { label: 'הגרל!', severity: 'info' },
+      rejectButtonProps: { label: 'ביטול', severity: 'secondary', variant: 'text' },
+      accept: () => {
+        this.giftListService.runLottery(gift.id).subscribe({
+          next: (result) => {
+            this.winner = { name: result.name, email: result.email };
+            this.lotteryGiftName = gift.name;
+            this.winnerDialog = true;
+            this.loadGifts();
+          },
+          error: () => {
+            this.messageService.add({
+              severity: 'error', summary: 'שגיאה', detail: 'שגיאה בהגרלה — ייתכן שאין משתתפים', life: 4000
+            });
+          }
+        });
+      }
+    });
   }
 }
