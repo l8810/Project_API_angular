@@ -14,11 +14,13 @@ namespace StoreApi.Services
     {
         private readonly IEmailRepository _repository;
         private readonly IConfiguration _config;
+        private readonly ILogger<EmailService> _logger;
 
-        public EmailService(IEmailRepository repository, IConfiguration config)
+        public EmailService(IEmailRepository repository, IConfiguration config, ILogger<EmailService> logger)
         {
             _repository = repository;
             _config = config;
+            _logger = logger;
         }
 
         /// <summary>
@@ -28,17 +30,18 @@ namespace StoreApi.Services
         /// <param name="giftId">The ID of the gift that was won</param>
         public async Task SendWinnerNotificationAsync(int giftId)
         {
-            Console.WriteLine($"[EMAIL] Starting email for gift {giftId}");
+            _logger.LogInformation("Sending winner notification for gift ID {GiftId}", giftId);
 
             var details = await _repository.GetWinnerDetailsAsync(giftId);
-            Console.WriteLine($"[EMAIL] Winner details: name={details?.WinnerName}, email={details?.Email}, gift={details?.GiftName}");
-
             if (details == null)
+            {
+                _logger.LogError("Winner details not found for gift ID {GiftId}", giftId);
                 throw new Exception("Winner details not found for gift ID: " + giftId);
+            }
 
+            _logger.LogInformation("Winner: {WinnerName} ({WinnerEmail}), Gift: {GiftName}", details.WinnerName, details.Email, details.GiftName);
             var senderEmail = _config["EmailSettings:SenderEmail"]!;
             var appPassword = _config["EmailSettings:AppPassword"]!;
-            Console.WriteLine($"[EMAIL] Sender: {senderEmail}, Password length: {appPassword?.Length}");
 
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("Raffle System", senderEmail));
@@ -111,15 +114,13 @@ namespace StoreApi.Services
             var bodyBuilder = new BodyBuilder { HtmlBody = htmlBody };
             message.Body = bodyBuilder.ToMessageBody();
 
-            Console.WriteLine("[EMAIL] Connecting to SMTP...");
+            _logger.LogDebug("Connecting to SMTP for winner notification (gift {GiftId})", giftId);
             using var client = new SmtpClient();
             await client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-            Console.WriteLine("[EMAIL] Connected. Authenticating...");
             await client.AuthenticateAsync(senderEmail, appPassword);
-            Console.WriteLine("[EMAIL] Authenticated. Sending...");
             await client.SendAsync(message);
             await client.DisconnectAsync(true);
-            Console.WriteLine("[EMAIL] Sent successfully!");
+            _logger.LogInformation("Winner notification email sent to {WinnerEmail} for gift ID {GiftId}", details.Email, giftId);
         }
 
         public async Task<WinnerDetailsDto> GetWinnerDetailsAsync(int giftId)

@@ -9,15 +9,19 @@ namespace StoreApi.Services
     public class CartService : ICartService
     {
         private readonly ICartRepository _repository;
+        private readonly ILogger<CartService> _logger;
 
-        public CartService(ICartRepository cartRepository)
+        public CartService(ICartRepository cartRepository, ILogger<CartService> logger)
         {
             _repository = cartRepository;
+            _logger = logger;
         }
 
-        // הוספת מוצר לעגלה
         public async Task<bool?> AddToCartAsync(CreateCartDto createCartDto)
         {
+            _logger.LogInformation("User {UserId} adding gift {GiftId} (qty {Count}) to cart",
+                createCartDto.UserId, createCartDto.GiftId, createCartDto.Count);
+
             var cart = new ProductCart
             {
                 UserId = createCartDto.UserId,
@@ -25,37 +29,47 @@ namespace StoreApi.Services
                 Count = createCartDto.Count
             };
 
-            var IsAdd = await _repository.AddToCartAsync(cart);
-            return IsAdd;
+            var result = await _repository.AddToCartAsync(cart);
+            if (result != true)
+                _logger.LogWarning("Failed to add gift {GiftId} to cart for user {UserId}", createCartDto.GiftId, createCartDto.UserId);
+            return result;
         }
 
-        // קבלת עגלת קניות של משתמש
         public async Task<List<CartDto>> GetCartByUserIdAsync(int userId)
         {
             var cartItems = await _repository.GetCartByUserIdAsync(userId);
+            _logger.LogInformation("Retrieved {Count} cart items for user {UserId}", cartItems.Count, userId);
 
             return cartItems.Select(c => new CartDto
             {
                 Id = c.Id,
                 GiftId = c.GiftId,
-                GiftName = c.Gift?.Name, 
-                GiftImage = c.Gift?.Picture, 
-                Price = c.Gift?.Price ?? 0, 
+                GiftName = c.Gift?.Name,
+                GiftImage = c.Gift?.Picture,
+                Price = c.Gift?.Price ?? 0,
                 UserId = c.UserId,
                 Count = c.Count
             }).ToList();
         }
 
-        // הסרת מוצר מהעגלה
         public async Task<bool?> RemoveFromCartAsync(int cartItemId)
         {
-            return await _repository.RemoveFromCartAsync(cartItemId);
+            var result = await _repository.RemoveFromCartAsync(cartItemId);
+            if (result == true)
+                _logger.LogInformation("Removed cart item {CartItemId}", cartItemId);
+            else
+                _logger.LogWarning("Remove failed — cart item {CartItemId} not found", cartItemId);
+            return result;
         }
 
-        // עדכון כמות מוצר בעגלה
         public async Task<bool?> UpdateCartItemAsync(int cartItemId, int addCount)
         {
-            return await _repository.UpdateCartItemAsync(cartItemId, addCount);
+            var result = await _repository.UpdateCartItemAsync(cartItemId, addCount);
+            if (result == true)
+                _logger.LogInformation("Updated cart item {CartItemId} by {AddCount}", cartItemId, addCount);
+            else
+                _logger.LogWarning("Update failed — cart item {CartItemId} not found", cartItemId);
+            return result;
         }
     }
 }

@@ -10,62 +10,69 @@ namespace StoreApi.Controllers
     public class GiftController : ControllerBase
     {
         private readonly IGiftService _services;
-        public GiftController(IGiftService services)
+        private readonly ILogger<GiftController> _logger;
+
+        public GiftController(IGiftService services, ILogger<GiftController> logger)
         {
             _services = services;
+            _logger = logger;
         }
-        //קבלת כל המתנות
+
         [HttpGet]
         public async Task<IActionResult> GetAllGifts()
         {
             var gifts = await _services.GetAllGiftsAsync();
             if (gifts == null || !gifts.Any())
             {
+                _logger.LogWarning("GET /gift — no gifts found in database");
                 return NotFound("No gifts found.");
             }
             return Ok(gifts);
         }
-        //קבלת מתנה לפי מזהה
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetGiftById(int id)
         {
             var gift = await _services.GetGiftByIdAsync(id);
             if (gift == null)
             {
+                _logger.LogWarning("GET /gift/{GiftId} — not found", id);
                 return NotFound($"Gift with ID {id} not found.");
             }
             return Ok(gift);
         }
-        //יצירת מתנה
+
         [Authorize(Roles = "2")]
         [HttpPost]
         public async Task<IActionResult> CreateGift([FromBody] CreateGiftDto createGiftDto)
         {
             if (!ModelState.IsValid)
             {
+                _logger.LogWarning("POST /gift — invalid model state");
                 return BadRequest(ModelState);
             }
             var createdGift = await _services.CreateGiftAsync(createGiftDto);
             return CreatedAtAction(nameof(GetGiftById), new { id = createdGift.Id }, createdGift);
         }
-        //עדכון מתנה
+
         [Authorize(Roles = "2")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateGift(int id, [FromBody] CreateGiftDto giftDto)
         {
             if (!ModelState.IsValid)
             {
+                _logger.LogWarning("PUT /gift/{GiftId} — invalid model state", id);
                 return BadRequest(ModelState);
             }
             var updatedGift = await _services.UpdateGiftAsync(id, giftDto);
             if (updatedGift == null)
             {
+                _logger.LogWarning("PUT /gift/{GiftId} — not found", id);
                 return NotFound($"Gift with ID {id} not found.");
             }
             return Ok(updatedGift);
         }
 
-        //מחיקת מתנה
         [Authorize(Roles = "2")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGift(int id)
@@ -73,6 +80,7 @@ namespace StoreApi.Controllers
             var result = await _services.DeleteGiftAsync(id);
             if (!result)
             {
+                _logger.LogWarning("DELETE /gift/{GiftId} — not found", id);
                 return NotFound($"Gift with ID {id} not found.");
             }
             return NoContent();
@@ -134,16 +142,18 @@ namespace StoreApi.Controllers
             return Ok(gifts);
 
         }
-        //הגרלת זוכה למתנה
         [Authorize(Roles = "2")]
         [HttpPost("{giftId}/lottery")]
         public async Task<IActionResult> LotteryForGift(int giftId)
         {
+            _logger.LogInformation("POST /gift/{GiftId}/lottery — lottery triggered", giftId);
             var winner = await _services.LotteryForGiftAsync(giftId);
             if (winner == null)
             {
+                _logger.LogWarning("POST /gift/{GiftId}/lottery — no participants", giftId);
                 return NotFound($"No participants found for gift ID {giftId}.");
             }
+            _logger.LogInformation("POST /gift/{GiftId}/lottery — winner: user {WinnerId}", giftId, winner.Id);
             return Ok(winner);
         }
     }

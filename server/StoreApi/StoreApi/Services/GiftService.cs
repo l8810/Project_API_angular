@@ -11,23 +11,28 @@ namespace StoreApi.Services
     public class GiftService : IGiftService
     {
         private readonly IGiftRepository _repository;
-        private readonly IEmailService _emailService; // NEW: Email service injection
+        private readonly IEmailService _emailService;
+        private readonly ILogger<GiftService> _logger;
 
-        public GiftService(IGiftRepository repository, IEmailService emailService) // NEW: Added email service parameter
+        public GiftService(IGiftRepository repository, IEmailService emailService, ILogger<GiftService> logger)
         {
             _repository = repository;
-            _emailService = emailService; // NEW: Store email service
+            _emailService = emailService;
+            _logger = logger;
         }
 
         public async Task<List<GiftDtoWithCategoryAndDonor>> GetAllGiftsAsync()
         {
             var gifts = await _repository.GetAllGiftsAsync();
+            _logger.LogInformation("Retrieved {Count} gifts", gifts.Count);
             return gifts.Select(g => MapToDetailedDto(g)).ToList();
         }
 
         public async Task<GiftDto?> GetGiftByIdAsync(int id)
         {
             var gift = await _repository.GetGiftByIdAsync(id);
+            if (gift == null)
+                _logger.LogWarning("Gift with ID {GiftId} not found", id);
             return gift == null ? null : MapToDto(gift);
         }
 
@@ -43,6 +48,7 @@ namespace StoreApi.Services
                 Picture = dto.Picture
             };
             var created = await _repository.CreateGiftAsync(gift);
+            _logger.LogInformation("Created gift with ID {GiftId}, Name '{GiftName}'", created.Id, created.Name);
             var detailed = await _repository.GetGiftByIdAsync(created.Id);
             return MapToDetailedDto(detailed!);
         }
@@ -59,7 +65,12 @@ namespace StoreApi.Services
                 Picture = dto.Picture
             };
             var updated = await _repository.UpdateGiftAsync(id, gift);
-            if (updated == null) return null;
+            if (updated == null)
+            {
+                _logger.LogWarning("Update failed — gift with ID {GiftId} not found", id);
+                return null;
+            }
+            _logger.LogInformation("Updated gift with ID {GiftId}", id);
             return new CreateGiftDto
             {
                 Name = updated.Name,
@@ -73,7 +84,15 @@ namespace StoreApi.Services
             };
         }
 
-        public async Task<bool> DeleteGiftAsync(int id) => await _repository.DeleteGiftAsync(id);
+        public async Task<bool> DeleteGiftAsync(int id)
+        {
+            var result = await _repository.DeleteGiftAsync(id);
+            if (result)
+                _logger.LogInformation("Deleted gift with ID {GiftId}", id);
+            else
+                _logger.LogWarning("Delete failed — gift with ID {GiftId} not found", id);
+            return result;
+        }
 
         public async Task<List<GiftDto>> GetGiftsByDonorNameAsync(string name) =>
             (await _repository.GetGiftsByDonorNameAsync(name)).Select(MapToDto).ToList();
@@ -93,21 +112,20 @@ namespace StoreApi.Services
         public async Task<List<GiftDto>> GetGiftsByPurchaseCountAsync(int count) =>
             (await _repository.GetGiftsByPurchaseCountAsync(count)).Select(MapToDto).ToList();
 
-        /// <summary>
-        /// Conducts the lottery and sends email to winner
-        /// NEW: Automatically sends congratulation email when someone wins
-        /// </summary>
         public async Task<UserWinerDTO?> LotteryForGiftAsync(int id)
         {
-            // STEP 1: Conduct the lottery (Repository Layer)
+            _logger.LogInformation("Starting lottery for gift ID {GiftId}", id);
             var win = await _repository.LotteryForGiftAsync(id);
-            
-            if (win == null)
-                return null;
 
+            if (win == null)
+            {
+                _logger.LogWarning("Lottery for gift ID {GiftId} had no participants", id);
+                return null;
+            }
+
+            _logger.LogInformation("Lottery winner for gift ID {GiftId}: user ID {UserId} ({UserEmail})", id, win.Id, win.Email);
             await _emailService.SendWinnerNotificationAsync(id);
 
-            // STEP 3: Return winner details to caller
             return new UserWinerDTO { Id = win.Id, Name = win.Name, Email = win.Email };
         }
 
