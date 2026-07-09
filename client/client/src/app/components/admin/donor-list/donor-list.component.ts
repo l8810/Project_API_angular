@@ -13,6 +13,18 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { Donor } from '../../../models/donor';
 import { DonorListService } from '../../../services/donor-list.service';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+
+// פונקציית עזר לקבלת ה-VFS של pdfMake (מחזירה אובייקט תמיד)
+const getVfs = () => {
+  try {
+    const fonts = pdfFonts as any;
+    return fonts?.pdfMake?.vfs || fonts?.vfs || (window as any).pdfMake?.vfs || {};
+  } catch {
+    return {};
+  }
+};
 
 @Component({
   selector: 'app-donor-list',
@@ -53,13 +65,12 @@ export class DonorListComponent implements OnInit {
     this.donorListService.getAllDonors().subscribe({
       next: (data: Donor[]) => this.donors.set(data),
       error: (err: any) => {
-        console.error('Error loading donors:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'שגיאה',
-          detail: 'שגיאה בטעינת התורמים',
-          life: 3000
-        });
+        if (err?.status === 404) {
+          this.donors.set([]);
+        } else {
+          console.error('Error loading donors:', err);
+          this.messageService.add({ severity: 'error', summary: 'שגיאה', detail: 'שגיאה בטעינת התורמים', life: 3000 });
+        }
       }
     });
   }
@@ -208,20 +219,76 @@ saveDonor(): void {
   }
 
   exportCSV(event: any): void {
+    if (typeof window === 'undefined') return;
+
     const currentDonors = this.donors();
-    const csvData = currentDonors.map(d => ({
-      'שם': d.name,
-      'אימייל': d.email,
-      'טלפון': d.phone,
-      'כתובת': d.address
-    }));
-    
-    console.log('Export CSV:', csvData);
-    this.messageService.add({
-      severity: 'info',
-      summary: 'ייצוא',
-      detail: 'פונקציונליות ייצוא תתווסף בקרוב',
-      life: 3000
-    });
+    if (!currentDonors || currentDonors.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'אין נתונים', detail: 'אין תורמים לייצוא', life: 3000 });
+      return;
+    }
+
+    const fonts = {
+      HebrewFont: {
+        normal: 'https://raw.githubusercontent.com/google/fonts/main/ofl/heebo/Heebo%5Bwght%5D.ttf',
+        bold: 'https://raw.githubusercontent.com/google/fonts/main/ofl/heebo/Heebo%5Bwght%5D.ttf',
+        italics: 'https://raw.githubusercontent.com/google/fonts/main/ofl/heebo/Heebo%5Bwght%5D.ttf',
+        bolditalics: 'https://raw.githubusercontent.com/google/fonts/main/ofl/heebo/Heebo%5Bwght%5D.ttf'
+      }
+    };
+
+    const documentDefinition: any = {
+      content: [
+        { text: this.fixTextDirection('רשימת תורמים - מכירה סינית'), style: 'header' },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['*', '*', 'auto', '*'],
+            body: [
+              [
+                { text: 'כתובת', style: 'tableHeader' },
+                { text: 'אימייל', style: 'tableHeader' },
+                { text: 'טלפון', style: 'tableHeader' },
+                { text: 'שם התורם', style: 'tableHeader' }
+              ],
+              ...currentDonors.map(d => [
+                { text: this.fixTextDirection(d.address || ''), alignment: 'right' },
+                { text: d.email || '', alignment: 'left' },
+                { text: d.phone || '', alignment: 'center' },
+                { text: this.fixTextDirection(d.name || ''), alignment: 'right' }
+              ])
+            ]
+          },
+          layout: 'lightHorizontalLines'
+        }
+      ],
+      rtl: true,
+      defaultStyle: { font: 'HebrewFont', alignment: 'right', fontSize: 10 },
+      styles: {
+        header: { fontSize: 22, bold: true, alignment: 'center', margin: [0, 0, 0, 20] },
+        tableHeader: { bold: true, fontSize: 12, color: 'white', fillColor: '#10b981', alignment: 'right' }
+      }
+    };
+
+    try {
+      const vfs = getVfs();
+      const pMake = (pdfMake as any).default || pdfMake;
+      pMake.vfs = vfs;
+      pMake.fonts = fonts;
+      pMake.createPdf(documentDefinition, {}, fonts, vfs).download('donors_list.pdf');
+      this.messageService.add({ severity: 'success', summary: 'ייצוא', detail: 'הקובץ ירד בהצלחה', life: 3000 });
+    } catch (error) {
+      console.error('שגיאה ביצירת PDF:', error);
+      this.messageService.add({ severity: 'error', summary: 'שגיאה', detail: 'ייצוא הקובץ נכשל', life: 3000 });
+    }
+  }
+
+  fixTextDirection(text: string): string {
+    if (!text) return '';
+    const cleanText = String(text).trim().replace(/\s+/g, ' ');
+    const hasHebrew = /[֐-׿]/.test(cleanText);
+    if (hasHebrew) {
+      return cleanText.split(' ').reverse().join('  ');
+    }
+    return cleanText;
   }
 }

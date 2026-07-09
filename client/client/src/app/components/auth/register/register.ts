@@ -36,7 +36,7 @@ export class Register {
     registerForm = this.fb.group({
         name: ['', [Validators.required, Validators.maxLength(50)]],
         email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
-        password: ['', [Validators.required, Validators.minLength(6)]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
     });
 
     onSubmit() {
@@ -96,7 +96,7 @@ export class Register {
     getPasswordError(): string {
         const control = this.registerForm.get('password');
         if (control?.errors?.['required']) return 'סיסמה היא שדה חובה';
-        if (control?.errors?.['minlength']) return 'הסיסמה חייבת להכיל לפחות 6 תווים';
+        if (control?.errors?.['minlength']) return 'הסיסמה חייבת להכיל לפחות 8 תווים';
         return '';
     }
 }

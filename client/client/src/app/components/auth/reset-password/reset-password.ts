@@ -34,7 +34,7 @@ export class ResetPasswordComponent implements OnInit {
     formSubmitted = false;
 
     resetForm = this.fb.group({
-        password: ['', [Validators.required, Validators.minLength(6)]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', [Validators.required]],
     }, { validators: passwordMatchValidator });
 
@@ -71,7 +71,7 @@ export class ResetPasswordComponent implements OnInit {
     getPasswordError(): string {
         const c = this.resetForm.get('password');
         if (c?.errors?.['required']) return 'סיסמה היא שדה חובה';
-        if (c?.errors?.['minlength']) return 'הסיסמה חייבת להכיל לפחות 6 תווים';
+        if (c?.errors?.['minlength']) return 'הסיסמה חייבת להכיל לפחות 8 תווים';
         return '';
     }
 

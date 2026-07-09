@@ -22,6 +22,18 @@ import { CategoryListService } from '../../../services/category-list.service';
 import { environment } from '../../../enviorments/enviorment';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+
+// פונקציית עזר לקבלת ה-VFS של pdfMake (מחזירה אובייקט תמיד)
+const getVfs = () => {
+  try {
+    const fonts = pdfFonts as any;
+    return fonts?.pdfMake?.vfs || fonts?.vfs || (window as any).pdfMake?.vfs || {};
+  } catch {
+    return {};
+  }
+};
 
 @Component({
   selector: 'app-gift-list',
@@ -89,13 +101,12 @@ export class GiftListComponent implements OnInit {
     this.giftListService.getAllGifts().subscribe({
       next: (data: Gift[]) => this.gifts.set(data),
       error: (err: any) => {
-        console.error('Error loading gifts:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'שגיאה',
-          detail: 'שגיאה בטעינת המתנות',
-          life: 3000
-        });
+        if (err?.status === 404) {
+          this.gifts.set([]);
+        } else {
+          console.error('Error loading gifts:', err);
+          this.messageService.add({ severity: 'error', summary: 'שגיאה', detail: 'שגיאה בטעינת המתנות', life: 3000 });
+        }
       }
     });
   }
@@ -360,23 +371,79 @@ export class GiftListComponent implements OnInit {
   }
 
   exportCSV(event: any): void {
-    const currentGifts = this.gifts();
-    const csvData = currentGifts.map(d => ({
-      'שם': d.name,
-      'תיאור': d.description,
-      'תורם': d.donorName,
-      'מחיר': d.price,
-      'קטגוריה': d.categoryName,
-      'תמונה': d.picture
-    }));
+    if (typeof window === 'undefined') return;
 
-    console.log('Export CSV:', csvData);
-    this.messageService.add({
-      severity: 'info',
-      summary: 'ייצוא',
-      detail: 'פונקציונליות ייצוא תתווסף בקרוב',
-      life: 3000
-    });
+    const currentGifts = this.gifts();
+    if (!currentGifts || currentGifts.length === 0) {
+      this.messageService.add({ severity: 'warn', summary: 'אין נתונים', detail: 'אין מתנות לייצוא', life: 3000 });
+      return;
+    }
+
+    const fonts = {
+      HebrewFont: {
+        normal: 'https://raw.githubusercontent.com/google/fonts/main/ofl/heebo/Heebo%5Bwght%5D.ttf',
+        bold: 'https://raw.githubusercontent.com/google/fonts/main/ofl/heebo/Heebo%5Bwght%5D.ttf',
+        italics: 'https://raw.githubusercontent.com/google/fonts/main/ofl/heebo/Heebo%5Bwght%5D.ttf',
+        bolditalics: 'https://raw.githubusercontent.com/google/fonts/main/ofl/heebo/Heebo%5Bwght%5D.ttf'
+      }
+    };
+
+    const documentDefinition: any = {
+      content: [
+        { text: this.fixTextDirection('קטלוג מתנות - מכירה סינית'), style: 'header' },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['*', '*', '*', 'auto', '*'],
+            body: [
+              [
+                { text: 'קטגוריה', style: 'tableHeader' },
+                { text: 'תורם', style: 'tableHeader' },
+                { text: 'תיאור', style: 'tableHeader' },
+                { text: 'מחיר', style: 'tableHeader' },
+                { text: 'שם המתנה', style: 'tableHeader' }
+              ],
+              ...currentGifts.map(g => [
+                { text: this.fixTextDirection(g.categoryName || ''), alignment: 'right' },
+                { text: this.fixTextDirection(g.donorName || ''), alignment: 'right' },
+                { text: this.fixTextDirection(g.description || ''), alignment: 'right' },
+                { text: (g.price ?? 0) + ' ₪', alignment: 'center' },
+                { text: this.fixTextDirection(g.name || ''), alignment: 'right' }
+              ])
+            ]
+          },
+          layout: 'lightHorizontalLines'
+        }
+      ],
+      rtl: true,
+      defaultStyle: { font: 'HebrewFont', alignment: 'right', fontSize: 10 },
+      styles: {
+        header: { fontSize: 22, bold: true, alignment: 'center', margin: [0, 0, 0, 20] },
+        tableHeader: { bold: true, fontSize: 12, color: 'white', fillColor: '#10b981', alignment: 'right' }
+      }
+    };
+
+    try {
+      const vfs = getVfs();
+      const pMake = (pdfMake as any).default || pdfMake;
+      pMake.vfs = vfs;
+      pMake.fonts = fonts;
+      pMake.createPdf(documentDefinition, {}, fonts, vfs).download('gifts_catalog.pdf');
+      this.messageService.add({ severity: 'success', summary: 'ייצוא', detail: 'הקובץ ירד בהצלחה', life: 3000 });
+    } catch (error) {
+      console.error('שגיאה ביצירת PDF:', error);
+      this.messageService.add({ severity: 'error', summary: 'שגיאה', detail: 'ייצוא הקובץ נכשל', life: 3000 });
+    }
+  }
+
+  fixTextDirection(text: string): string {
+    if (!text) return '';
+    const cleanText = String(text).trim().replace(/\s+/g, ' ');
+    const hasHebrew = /[֐-׿]/.test(cleanText);
+    if (hasHebrew) {
+      return cleanText.split(' ').reverse().join('  ');
+    }
+    return cleanText;
   }
   viewImage(fileName: string): void {
     if (fileName) {

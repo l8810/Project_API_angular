@@ -7,7 +7,11 @@
             <h1 class="catalog-title">קטלוג מתנות</h1>
         </div>
         <div class="flex align-items-center gap-3">
-            <span class="items-count">סה"כ {{ gifts().length }} פריטים</span>
+            <span class="items-count">
+              {{ filteredGifts().length }}
+              @if (filteredGifts().length !== gifts().length) { <span>מתוך {{ gifts().length }}</span> }
+              פריטים
+            </span>
             <p-selectbutton [ngModel]="layout()" (ngModelChange)="layout.set($event)" [options]="options"
                 [allowEmpty]="false" class="cyber-select-button">
                 <ng-template #item let-item>
@@ -17,7 +21,67 @@
         </div>
     </div>
 
-    <p-dataview #dv [value]="gifts()" [layout]="layout()" [paginator]="true" [rows]="9" class="custom-dv">
+    <!-- סרגל סינון -->
+    <div class="filter-bar mb-4" dir="rtl">
+        <div class="filter-bar-inner">
+
+            <div class="filter-group">
+                <span class="filter-group-label">
+                    <i class="pi pi-tag"></i> קטגוריה
+                </span>
+                <p-select [options]="categories()" [ngModel]="selectedCategory()" (ngModelChange)="selectedCategory.set($event)"
+                    optionLabel="label" optionValue="value" placeholder="הכל" class="filter-select" />
+            </div>
+
+            <div class="filter-sep"></div>
+
+            <div class="filter-group">
+                <span class="filter-group-label">
+                    <i class="pi pi-user"></i> תורם
+                </span>
+                <p-select [options]="donors()" [ngModel]="selectedDonor()" (ngModelChange)="selectedDonor.set($event)"
+                    optionLabel="label" optionValue="value" placeholder="הכל" class="filter-select" />
+            </div>
+
+            <div class="filter-sep"></div>
+
+            <div class="filter-group">
+                <span class="filter-group-label">
+                    <i class="pi pi-wallet"></i> טווח מחיר
+                </span>
+                <div class="price-range-row">
+                    <span class="price-range-label">מ-</span>
+                    <input type="number" class="price-input" placeholder="0"
+                        [value]="minPrice() ?? ''" (input)="minPrice.set(+($any($event.target).value) || null)" min="0" />
+                    <span class="price-dash">—</span>
+                    <span class="price-range-label">עד</span>
+                    <input type="number" class="price-input" placeholder="∞"
+                        [value]="maxPrice() ?? ''" (input)="maxPrice.set(+($any($event.target).value) || null)" min="0" />
+                    <span class="price-sym">₪</span>
+                </div>
+            </div>
+
+            <div class="filter-sep"></div>
+
+            <div class="filter-group">
+                <span class="filter-group-label">
+                    <i class="pi pi-gift"></i> הגרלה
+                </span>
+                <button class="available-toggle" [class.active]="onlyAvailable()" (click)="onlyAvailable.set(!onlyAvailable())">
+                    <i class="pi" [class.pi-check-circle]="onlyAvailable()" [class.pi-circle]="!onlyAvailable()"></i>
+                    טרם הוגרלו
+                </button>
+            </div>
+
+            @if (hasActiveFilters()) {
+                <button class="clear-btn" (click)="clearFilters()">
+                    <i class="pi pi-times"></i> נקה
+                </button>
+            }
+        </div>
+    </div>
+
+    <p-dataview #dv [value]="filteredGifts()" [layout]="layout()" [paginator]="true" [rows]="9" class="custom-dv">
         
         <ng-template #list let-items>
             <div class="grid grid-nogutter bg-transparent">
@@ -39,7 +103,7 @@
                                 <div class="price-tag-main"><span class="price-val">₪{{ item.price * (item.count || 1) }}</span></div>
                             } @else {
                                 <div class="winner-chip">
-                                    <span class="winner-chip-label">זוכה</span>
+                                    <span class="winner-chip-label">הזוכה המאושר\ת</span>
                                     <div class="winner-chip-avatar">{{ item.winnerName.charAt(0) }}</div>
                                     <div class="winner-chip-name">{{ item.winnerName }}</div>
                                 </div>
@@ -67,15 +131,15 @@
                 @for (item of items; track item.id) {
                 <div class="col-12 sm:col-6 md:col-4 p-3">
                     <div class="premium-gift-card grid-mode flex flex-column p-4 h-full" [class.sold-out]="item.winnerName">
-                        
                         <div class="card-image-wrapper w-full mb-3">
-                            @if (item.winnerName) { <div class="won-badge"><i class="pi pi-check"></i> הוגרל</div> }
+                            @if (item.winnerName) { <div class="won-badge"><i class="pi pi-trophy"></i> הוגרל</div> }
                             <img [src]="getImageUrl(item.picture)" class="gift-img-premium" />
                         </div>
 
                         <div class="card-content flex-1 text-right">
                             <span class="category-badge">{{ item.categoryName }}</span>
                             <h3 class="gift-name">{{ item.name }}</h3>
+                            <p class="gift-desc">{{ item.description }}</p>
                         </div>
 
                         @if (!item.winnerName) {
@@ -95,11 +159,33 @@
                         } @else {
                             <div class="winner-chip-grid mt-auto pt-3 border-top-glass">
                                 <div class="winner-chip-avatar-sm">{{ item.winnerName.charAt(0) }}</div>
-                                <div class="winner-chip-name-sm">{{ item.winnerName }}</div>
+                                <div class="winner-chip-info-sm">
+                                    <span class="winner-chip-label-sm">הזוכה המאושר\ת</span>
+                                    <div class="winner-chip-name-sm">{{ item.winnerName }}</div>
+                                </div>
                             </div>
                         }
                     </div>
                 </div>
+                }
+            </div>
+        </ng-template>
+
+        <ng-template #emptymessage>
+            <div class="gifts-empty-state text-center" dir="rtl">
+                <div class="empty-icon-wrapper">
+                    <i class="pi" [ngClass]="hasActiveFilters() ? 'pi-filter-slash' : 'pi-gift'"></i>
+                    <div class="pulse-ring"></div>
+                </div>
+                @if (hasActiveFilters()) {
+                    <h2 class="empty-title">לא נמצאו מתנות תואמות</h2>
+                    <p class="empty-subtitle">אין מתנות שמתאימות לסינון שבחרת. נסו להרחיב את החיפוש או לנקות את הסינון.</p>
+                    <button class="empty-clear-btn" (click)="clearFilters()">
+                        <i class="pi pi-times"></i> נקה סינון
+                    </button>
+                } @else {
+                    <h2 class="empty-title">אין עדיין מתנות בקטלוג</h2>
+                    <p class="empty-subtitle">ברגע שיתווספו מתנות למכירה הן יופיעו כאן. שווה לחזור ולבדוק בקרוב ✨</p>
                 }
             </div>
         </ng-template>

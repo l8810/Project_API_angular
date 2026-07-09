@@ -10,7 +10,8 @@
     </div>
 
     <p-table [value]="orders()" dataKey="id" [tableStyle]="{ 'min-width': '60rem' }" [expandedRowKeys]="expandedRows"
-        (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" styleClass="p-datatable-cyber">
+        (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" styleClass="p-datatable-cyber"
+        emptyMessage="עדיין אין הזמנות במערכת">
 
         <ng-template #caption>
             <div class="total-orders-badge">

@@ -24,9 +24,9 @@ namespace StoreApi.Controllers
             var gifts = await _services.GetAllGiftsAsync();
             if (gifts == null || !gifts.Any())
             {
-                _logger.LogWarning("GET /gift — no gifts found in database");
-                return NotFound("No gifts found.");
+                _logger.LogInformation("GET /gift — no gifts in database, returning empty list");
             }
+            // אוסף ריק אינו שגיאה — מחזירים 200 עם מערך ריק
             return Ok(gifts);
         }
 

@@ -40,6 +40,159 @@ html {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #00b894; 
+    background: #00b894;
+}
+
+/* ═══════════════════════════════════════
+   Admin Dialog — עיצוב משותף לכל הדיאלוגים
+   ═══════════════════════════════════════ */
+
+.admin-dialog {
+    border-radius: 16px !important;
+    overflow: hidden;
+    border: 1px solid rgba(0,184,148,0.2) !important;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.6) !important;
+    background: #161b22 !important;
+    --p-dialog-background: #161b22;
+    --p-dialog-border-color: transparent;
+    --p-dialog-color: #e6edf3;
+    --p-dialog-border-radius: 16px;
+    --p-dialog-header-background: #161b22;
+    --p-dialog-content-background: #161b22;
+    --p-dialog-footer-background: #161b22;
+}
+
+.admin-dialog .p-dialog-content {
+    background: #161b22 !important;
+    color: #e6edf3 !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+.admin-dialog .p-dialog-footer {
+    background: #161b22 !important;
+    border-top: 1px solid #30363d !important;
+    border-radius: 0 0 16px 16px !important;
+}
+
+.admin-dialog .p-dialog-header {
+    display: none !important;
+}
+
+/* כותרת מותאמת */
+.admin-dialog-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 22px 16px;
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+    border-bottom: 1px solid rgba(0, 184, 148, 0.2);
+    position: relative;
+    direction: rtl;
+}
+
+.admin-dialog-icon {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(0,184,148,0.2), rgba(0,184,148,0.08));
+    border: 1px solid rgba(0,184,148,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #00b894;
+    font-size: 1.2rem;
+    box-shadow: 0 0 14px rgba(0,184,148,0.2);
+}
+
+.admin-dialog-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #e6edf3;
+    line-height: 1.2;
+}
+
+.admin-dialog-sub {
+    font-size: 0.78rem;
+    color: #6e7681;
+    margin-top: 2px;
+}
+
+.admin-dialog-close {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #6e7681;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: color 0.2s, background 0.2s;
+}
+
+.admin-dialog-close:hover {
+    color: #e6edf3;
+    background: rgba(255,255,255,0.06);
+}
+
+.admin-dialog-body {
+    padding: 20px 22px;
+    overflow-y: auto;
+}
+
+/* ===== פאנל dropdown/select כהה (PrimeNG p-select overlay ב-body) ===== */
+.cyber-select-panel.p-select-overlay,
+.cyber-select-panel.p-dropdown-panel,
+.cyber-select-panel {
+    background: #161b22 !important;
+    color: #e6edf3 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 10px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+}
+
+.cyber-select-panel .p-select-list,
+.cyber-select-panel .p-dropdown-items {
+    background: transparent !important;
+    padding: 4px !important;
+}
+
+.cyber-select-panel .p-select-option,
+.cyber-select-panel .p-dropdown-item {
+    color: #e6edf3 !important;
+    background: transparent !important;
+    border-radius: 8px !important;
+    transition: background 0.15s, color 0.15s;
+}
+
+.cyber-select-panel .p-select-option:hover,
+.cyber-select-panel .p-dropdown-item:hover,
+.cyber-select-panel .p-select-option.p-focus,
+.cyber-select-panel .p-dropdown-item.p-focus {
+    background: #1c2128 !important;
+    color: #ffffff !important;
+}
+
+.cyber-select-panel .p-select-option.p-select-option-selected,
+.cyber-select-panel .p-select-option[aria-selected="true"],
+.cyber-select-panel .p-dropdown-item.p-highlight {
+    background: rgba(0, 184, 148, 0.15) !important;
+    color: #00b894 !important;
+}
+
+.cyber-select-panel .p-select-filter,
+.cyber-select-panel .p-dropdown-filter {
+    background: #0d1117 !important;
+    color: #ffffff !important;
+    border: 1px solid #30363d !important;
+}
+
+.cyber-select-panel .p-select-empty-message,
+.cyber-select-panel .p-dropdown-empty-message {
+    color: #8b949e !important;
 }
 

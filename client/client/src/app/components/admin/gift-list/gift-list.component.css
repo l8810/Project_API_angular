@@ -15,8 +15,8 @@
 
 /* עיצוב תמונות ממוזערות בטבלה */
 .gift-thumb {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     object-fit: cover;
     border-radius: 8px;
     border: 1px solid #30363d;
@@ -117,6 +117,12 @@
     background: #161b22 !important;
     color: #8b949e !important;
     border-color: #30363d !important;
+    padding: 0.55rem 1rem !important;
+}
+
+/* טבלה צפופה יותר - תאים */
+:host ::ng-deep .p-datatable-cyber .p-datatable-tbody > tr > td {
+    padding: 0.5rem 1rem !important;
 }
 /* צביעת הרקע הכללי של כל הדף - זה יבטל את הלובן מסביב */
 :host {
@@ -130,11 +136,124 @@
     min-height: 100vh;
 }
 
+/* --- דיאלוג מתנה --- */
+:host ::ng-deep .gift-dialog .p-dialog-content,
+:host ::ng-deep .gift-dialog .p-dialog-footer {
+    background-color: #161b22 !important;
+    color: #e6edf3 !important;
+    border: none !important;
+}
+
+:host ::ng-deep .gift-dialog .p-dialog-content {
+    padding: 0 !important;
+    border-radius: 16px !important;
+    overflow: hidden;
+}
+
+:host ::ng-deep .gift-dialog .p-dialog-footer {
+    border-top: 1px solid #30363d !important;
+    border-radius: 0 0 16px 16px !important;
+}
+
+:host ::ng-deep .gift-dialog {
+    border-radius: 16px !important;
+    overflow: hidden;
+    border: 1px solid rgba(0,184,148,0.2) !important;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,184,148,0.08) !important;
+    background: #161b22 !important;
+}
+
+:host ::ng-deep .gift-dialog .p-dialog,
+:host ::ng-deep .gift-dialog.p-dialog {
+    background: #161b22 !important;
+    border: none !important;
+}
+
+:host ::ng-deep p-dialog.gift-dialog > .p-dialog {
+    background: #161b22 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+:host ::ng-deep p-dialog.gift-dialog {
+    --p-dialog-background: #161b22;
+    --p-dialog-border-color: transparent;
+    --p-dialog-color: #e6edf3;
+    --p-dialog-border-radius: 16px;
+    --p-dialog-header-background: #161b22;
+    --p-dialog-header-color: #e6edf3;
+    --p-dialog-content-background: #161b22;
+    --p-dialog-footer-background: #161b22;
+}
+
+/* כותרת מותאמת */
+.gift-dialog-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 22px 16px;
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+    border-bottom: 1px solid rgba(0, 184, 148, 0.2);
+    position: relative;
+}
+
+.gift-dialog-icon {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(0,184,148,0.2), rgba(0,184,148,0.08));
+    border: 1px solid rgba(0,184,148,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #00b894;
+    font-size: 1.2rem;
+    box-shadow: 0 0 14px rgba(0,184,148,0.2);
+}
+
+.gift-dialog-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #e6edf3;
+    line-height: 1.2;
+}
+
+.gift-dialog-sub {
+    font-size: 0.78rem;
+    color: #6e7681;
+    margin-top: 2px;
+}
+
+.gift-dialog-close {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #6e7681;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: color 0.2s, background 0.2s;
+}
+
+.gift-dialog-close:hover {
+    color: #e6edf3;
+    background: rgba(255,255,255,0.06);
+}
+
+.gift-dialog-body {
+    padding: 20px 22px;
+}
+
 /* --- תיקון הדיאלוג (החלון הקופץ) --- */
 :host ::ng-deep .cyber-dialog .p-dialog-header,
 :host ::ng-deep .cyber-dialog .p-dialog-content,
 :host ::ng-deep .cyber-dialog .p-dialog-footer {
-    background-color: #161b22 !important; /* רקע כהה */
+    background-color: #161b22 !important;
     color: #e6edf3 !important;
     border: 1px solid #30363d !important;
 }
@@ -243,5 +362,93 @@
     position: relative;
     background: #161b22; /* רקע כדי שהטקסט הצף יהיה קריא */
     z-index: 10;
+}
+
+/* ============================================================
+   שדות טופס אחידים בדיאלוג "הוספת / עריכת מתנה"
+   מאחד input / textarea / select לאותו גובה, ריפוד, מסגרת ומיקוד
+   ============================================================ */
+
+/* בסיס משותף לכל השדות */
+:host ::ng-deep .admin-dialog-body input.cyber-input,
+:host ::ng-deep .admin-dialog-body textarea.cyber-input,
+:host ::ng-deep .admin-dialog-body .p-select.cyber-input {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    background-color: #0d1117 !important;
+    color: #e6edf3 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 10px !important;
+    font-family: inherit !important;
+    font-size: 0.95rem !important;
+    transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease !important;
+}
+
+/* input בשורה בודדת (שם מתנה / מחיר) */
+:host ::ng-deep .admin-dialog-body input.cyber-input {
+    height: 48px !important;
+    padding: 0 14px !important;
+    line-height: 1.5 !important;
+}
+
+/* textarea (תיאור) */
+:host ::ng-deep .admin-dialog-body textarea.cyber-input {
+    min-height: 92px !important;
+    padding: 12px 14px !important;
+    line-height: 1.5 !important;
+    resize: vertical !important;
+}
+
+/* select (תורם / קטגוריה) — יישור לאותו גובה כמו input */
+:host ::ng-deep .admin-dialog-body .p-select.cyber-input {
+    height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 !important;
+}
+:host ::ng-deep .admin-dialog-body .p-select.cyber-input .p-select-label {
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+    padding: 0 14px !important;
+    color: #e6edf3 !important;
+    background: transparent !important;
+    border: none !important;
+    font-size: 0.95rem !important;
+}
+:host ::ng-deep .admin-dialog-body .p-select.cyber-input .p-select-label.p-placeholder {
+    color: #6e7681 !important;
+}
+/* חץ ה-select משתלב בלי תיבה נפרדת */
+:host ::ng-deep .admin-dialog-body .p-select.cyber-input .p-select-dropdown {
+    width: 2.75rem !important;
+    background: transparent !important;
+    border: none !important;
+    color: #6e7681 !important;
+}
+
+/* ריחוף אחיד — מסגרת ירוקה */
+:host ::ng-deep .admin-dialog-body input.cyber-input:hover,
+:host ::ng-deep .admin-dialog-body textarea.cyber-input:hover,
+:host ::ng-deep .admin-dialog-body .p-select.cyber-input:not(.p-disabled):hover {
+    border-color: #00b894 !important;
+}
+
+/* מיקוד אחיד — מסגרת ירוקה + זוהר עדין */
+:host ::ng-deep .admin-dialog-body input.cyber-input:focus,
+:host ::ng-deep .admin-dialog-body textarea.cyber-input:focus,
+:host ::ng-deep .admin-dialog-body .p-select.cyber-input.p-focus {
+    border-color: #00b894 !important;
+    box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.18) !important;
+    outline: none !important;
+}
+:host ::ng-deep .admin-dialog-body .p-select.cyber-input.p-focus .p-select-dropdown {
+    color: #00b894 !important;
+}
+
+/* placeholder אחיד */
+:host ::ng-deep .admin-dialog-body input.cyber-input::placeholder,
+:host ::ng-deep .admin-dialog-body textarea.cyber-input::placeholder {
+    color: #6e7681 !important;
 }
 

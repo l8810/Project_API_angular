@@ -12,16 +12,16 @@
                 <p-button label="מתנה חדשה" icon="pi pi-plus" (onClick)="openNew()" class="add-to-cart-glow" />
             </ng-template>
             <ng-template pTemplate="end">
-                <p-button label="ייצא לאקסל" icon="pi pi-upload" [outlined]="true" severity="secondary"
+                <p-button label="ייצא ל-PDF" icon="pi pi-file-pdf" [outlined]="true" severity="secondary"
                     (onClick)="exportCSV($event)" class="cyber-secondary-btn" />
             </ng-template>
         </p-toolbar>
 
         <p-table #dt [value]="gifts()" [rows]="10" [paginator]="true"
             [globalFilterFields]="['name', 'description', 'donorName', 'price','categoryName']"
-            [tableStyle]="{ 'min-width': '75rem' }" [rowHover]="true" dataKey="Id" styleClass="p-datatable-cyber"
+            [tableStyle]="{ 'width': '100%' }" [rowHover]="true" dataKey="Id" styleClass="p-datatable-cyber"
             currentPageReportTemplate="מציג {first} עד {last} מתוך {totalRecords} רשומות"
-            [showCurrentPageReport]="true">
+            [showCurrentPageReport]="true" emptyMessage="עדיין אין מתנות במערכת">
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
                     <div class="flex flex-column gap-1">
@@ -78,10 +78,21 @@
         </p-table>
     </div>
 
-    <p-dialog [(visible)]="giftDialog" [style]="{ width: '480px' }" header="פרטי מתנה בקטלוג" [modal]="true"
-        styleClass="cyber-dialog" [draggable]="false">
+    <p-dialog [(visible)]="giftDialog" [style]="{ width: '500px' }" [modal]="true"
+        styleClass="cyber-dialog admin-dialog" [draggable]="false" [showHeader]="false"
+        [contentStyle]="{ 'overflow-y': 'auto', 'max-height': '80vh', 'padding': '0' }">
         <ng-template pTemplate="content">
-            <div class="p-fluid mt-3" dir="rtl">
+            <div class="admin-dialog-header">
+                <div class="admin-dialog-icon">
+                    <i class="pi" [class.pi-plus-circle]="!gift.id" [class.pi-pencil]="gift.id"></i>
+                </div>
+                <div>
+                    <div class="admin-dialog-title">{{ gift.id ? 'עריכת מתנה' : 'הוספת מתנה' }}</div>
+                    <div class="admin-dialog-sub">{{ gift.id ? 'עדכן את פרטי המתנה' : 'הוסף מתנה חדשה לקטלוג' }}</div>
+                </div>
+                <button class="admin-dialog-close" (click)="hideDialog()"><i class="pi pi-times"></i></button>
+            </div>
+            <div class="p-fluid admin-dialog-body" dir="rtl">
                 <div class="field mb-4">
                     <label class="cyber-label">שם מתנה</label>
                     <input type="text" pInputText [(ngModel)]="gift.name" class="cyber-input" />
@@ -92,19 +103,19 @@
                     <textarea pInputTextarea [(ngModel)]="gift.description" rows="2" class="cyber-input"></textarea>
                 </div>
 
-                <div class="col-6 field mb-4">
+                <div class="field mb-4">
                     <label class="cyber-label">תורם</label>
                     <p-select [options]="donors()" [(ngModel)]="gift.donorId" optionLabel="name" optionValue="id"
-                        placeholder="בחר תורם" styleClass="cyber-input w-full"></p-select>
+                        placeholder="בחר תורם" styleClass="cyber-input w-full" panelStyleClass="cyber-select-panel"></p-select>
                 </div>
-                <div class="col-6 field mb-4">
+                <div class="field mb-4">
                     <label class="cyber-label">מחיר</label>
                     <input type="number" pInputText [(ngModel)]="gift.price" class="cyber-input" />
                 </div>
                 <div class="field mb-4">
                     <label class="cyber-label">קטגוריה</label>
                     <p-select [options]="categories()" [(ngModel)]="gift.categoryId" optionLabel="name" optionValue="id"
-                        placeholder="בחר קטגוריה" styleClass="cyber-input w-full"></p-select>
+                        placeholder="בחר קטגוריה" styleClass="cyber-input w-full" panelStyleClass="cyber-select-panel"></p-select>
                 </div>
 
                 <div class="field">

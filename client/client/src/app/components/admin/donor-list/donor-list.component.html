@@ -17,12 +17,12 @@
                 />
             </ng-template>
             <ng-template pTemplate="end">
-                <p-button 
-                    label="ייצא" 
-                    icon="pi pi-upload" 
-                    severity="secondary" 
+                <p-button
+                    label="ייצא ל-PDF"
+                    icon="pi pi-file-pdf"
+                    severity="secondary"
                     [outlined]="true"
-                    (onClick)="exportCSV($event)" 
+                    (onClick)="exportCSV($event)"
                     class="cyber-secondary-btn"
                 />
             </ng-template>
@@ -34,12 +34,13 @@
             [rows]="10"
             [paginator]="true"
             [globalFilterFields]="['name', 'email', 'phone', 'address']"
-            [tableStyle]="{ 'min-width': '75rem' }"
+            [tableStyle]="{ 'width': '100%' }"
             [rowHover]="true"
             dataKey="Id"
             styleClass="p-datatable-cyber"
             currentPageReportTemplate="מציג {first} עד {last} מתוך {totalRecords} רשומות"
             [showCurrentPageReport]="true"
+            emptyMessage="עדיין אין תורמים במערכת"
         >
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
@@ -62,27 +63,27 @@
 
             <ng-template pTemplate="header">
                 <tr>
-                    <th pSortableColumn="name" style="min-width:16rem">
+                    <th pSortableColumn="name">
                         <div class="flex items-center gap-2">
                             שם <p-sortIcon field="name" />
                         </div>
                     </th>
-                    <th pSortableColumn="email" style="min-width:16rem">
+                    <th pSortableColumn="email">
                         <div class="flex items-center gap-2">
                             אימייל <p-sortIcon field="email" />
                         </div>
                     </th>
-                    <th pSortableColumn="phone" style="min-width:12rem">
+                    <th pSortableColumn="phone">
                         <div class="flex items-center gap-2">
                             טלפון <p-sortIcon field="phone" />
                         </div>
                     </th>
-                    <th pSortableColumn="address" style="min-width:16rem">
+                    <th pSortableColumn="address">
                         <div class="flex items-center gap-2">
                             כתובת <p-sortIcon field="address" />
                         </div>
                     </th>
-                    <th style="min-width: 12rem">פעולות</th>
+                    <th style="width: 7rem">פעולות</th>
                 </tr>
             </ng-template>
 
@@ -116,17 +117,28 @@
         </p-table>
     </div>
 
-    <p-dialog 
-        [(visible)]="donorDialog" 
-        [style]="{ width: '480px' }" 
-        header="פרטי תורם" 
+    <p-dialog
+        [(visible)]="donorDialog"
+        [style]="{ width: '480px' }"
         [modal]="true"
         [draggable]="false"
         [resizable]="false"
-        styleClass="cyber-dialog"
+        styleClass="cyber-dialog admin-dialog"
+        [showHeader]="false"
+        [contentStyle]="{ 'overflow-y': 'auto', 'max-height': '80vh', 'padding': '0' }"
     >
         <ng-template pTemplate="content">
-            <div class="p-fluid mt-3" dir="rtl">
+            <div class="admin-dialog-header">
+                <div class="admin-dialog-icon">
+                    <i class="pi" [class.pi-user-plus]="!donor.id" [class.pi-user-edit]="donor.id"></i>
+                </div>
+                <div>
+                    <div class="admin-dialog-title">{{ donor.id ? 'עריכת תורם' : 'הוספת תורם' }}</div>
+                    <div class="admin-dialog-sub">{{ donor.id ? 'עדכן את פרטי התורם' : 'הוסף תורם חדש למערכת' }}</div>
+                </div>
+                <button class="admin-dialog-close" (click)="hideDialog()"><i class="pi pi-times"></i></button>
+            </div>
+            <div class="p-fluid admin-dialog-body" dir="rtl">
                 <div class="field mb-4">
                     <label for="name" class="cyber-label">שם מלא</label>
                     <input 

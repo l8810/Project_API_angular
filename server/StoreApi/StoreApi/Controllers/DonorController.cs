@@ -20,10 +20,7 @@ namespace StoreApi.Controllers
         public async Task<IActionResult> GetAllDonors()
         {
             var donors = await _services.GetAllDonorsAsync();
-            if (donors == null || !donors.Any())
-            {
-                return NotFound("No donors found.");
-            }
+            // אין תורמים זה מצב תקין ולא שגיאה — מחזירים מערך ריק (200)
             return Ok(donors);
         }
         //קבלת תורם לפי מזהה

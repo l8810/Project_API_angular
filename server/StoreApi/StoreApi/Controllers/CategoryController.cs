@@ -21,12 +21,7 @@ namespace StoreApi.Controllers
         public async Task<IActionResult> GetAllCategories()
         {
             var categories = await _services.GetAllCategoriesAsync();
-
-            if (categories == null || !categories.Any())
-            {
-                return NotFound("No categories found.");
-            }
-
+            // אוסף ריק אינו שגיאה — מחזירים 200 עם מערך ריק
             return Ok(categories);
         }
 

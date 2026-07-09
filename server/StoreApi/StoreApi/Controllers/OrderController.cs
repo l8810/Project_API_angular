@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StoreApi.Services;
+using StoreApi.DTOs;
 
 namespace StoreApi.Controllers
 {
@@ -32,11 +33,8 @@ namespace StoreApi.Controllers
         public async Task<IActionResult> GetOrdersByUserId(int userId)
         {
             var orders = await _services.GetOrdersByUserIdAsync(userId);
-            if (orders == null || !orders.Any())
-            {
-                return NotFound("No orders found for the specified user.");
-            }
-            return Ok(orders);
+            // אין הזמנות זה מצב תקין ולא שגיאה — מחזירים מערך ריק (200)
+            return Ok(orders ?? new List<OrderDto>());
         }
         // קבלת כל ההזמנות במערכת
         [Authorize(Roles = "2")]
@@ -44,11 +42,8 @@ namespace StoreApi.Controllers
         public async Task<IActionResult> GetAllOrders()
         {
             var orders = await _services.GetAllOrdersAsync();
-            if (orders == null || !orders.Any())
-            {
-                return NotFound("No orders found in the system.");
-            }
-            return Ok(orders);
+            // אין הזמנות זה מצב תקין ולא שגיאה — מחזירים מערך ריק (200)
+            return Ok(orders ?? new List<OrderDto>());
         }
     }
 

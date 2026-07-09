@@ -50,19 +50,17 @@
     text-align: center;
 }
 
-/* מחיר וזוהר */
+/* מחיר */
 .price-tag-sm {
-    color: #00b894;
-    font-size: 1.4rem;
-    font-weight: bold;
-    text-shadow: 0 0 10px rgba(0, 184, 148, 0.3);
+    color: #c9d1d9;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 .price-val {
-    color: #00b894;
-    font-size: 2rem;
-    font-weight: 900;
-    text-shadow: 0 0 15px rgba(0, 184, 148, 0.5);
+    color: #c9d1d9;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 /* כפתור תשלום זוהר */
@@ -261,19 +259,17 @@
     text-align: center;
 }
 
-/* מחיר וזוהר */
+/* מחיר */
 .price-tag-sm {
-    color: #00b894;
-    font-size: 1.4rem;
-    font-weight: bold;
-    text-shadow: 0 0 10px rgba(0, 184, 148, 0.3);
+    color: #c9d1d9;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 .price-val {
-    color: #00b894;
-    font-size: 2rem;
-    font-weight: 900;
-    text-shadow: 0 0 15px rgba(0, 184, 148, 0.5);
+    color: #c9d1d9;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 /* כפתור תשלום זוהר */

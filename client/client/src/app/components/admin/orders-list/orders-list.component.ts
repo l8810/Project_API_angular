@@ -38,13 +38,17 @@ export class OrdersListComponent implements OnInit {
     this.ordersListService.getAllOrders().subscribe({
       next: (data: Order[]) => this.orders.set(data),
       error: (err: any) => {
-        console.error('שגיאה בטעינת הזמנות:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'שגיאה',
-          detail: 'לא ניתן לטעון את רשימת ההזמנות',
-          life: 3000
-        });
+        if (err?.status === 404) {
+          this.orders.set([]);
+        } else {
+          console.error('שגיאה בטעינת הזמנות:', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'שגיאה',
+            detail: 'לא ניתן לטעון את רשימת ההזמנות',
+            life: 3000
+          });
+        }
       }
     });
   }
